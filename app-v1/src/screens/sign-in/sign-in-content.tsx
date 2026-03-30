@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link, router } from 'expo-router';
-import { View, Pressable, Image } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
+import { View, Pressable, Image } from 'react-native';
 import { useForm, Controller, useFormState } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { authApi } from '~/src/api';
-import { GoogleSignIn } from '~/src/lib/supabase';
 import { ErrorGet } from '~/src/scripts/error';
+import { GoogleSignIn } from '~/src/lib/supabase';
 import { ProfileStore } from '~/src/stores/profile.store';
 
 import { Toast } from '~/src/components/toast';
