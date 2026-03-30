@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
@@ -10,7 +10,6 @@ type ToastVariant = 'default' | 'success' | 'destructive';
 type ToastRecord = {
   id: number;
   title: string;
-  description?: string;
   duration: number;
   variant: ToastVariant;
 };
@@ -20,23 +19,27 @@ let listeners: (() => void)[] = [];
 
 function subscribe(listener: () => void) {
   listeners.push(listener);
-  return () => { listeners = listeners.filter(l => l !== listener); };
-}
+  return () => {
+    listeners = listeners.filter((currentListener) => currentListener !== listener);
+  };
+};
 
-function addToast(title: string, variant: ToastVariant = 'default', duration = 6000, description?: string) {
+function addToast(title: string, variant: ToastVariant = 'default', duration = 6000) {
   const id = Date.now() + Math.random();
-  toasts = [...toasts, { id, title, description, variant, duration }];
-  listeners.forEach(l => l());
-  if (duration > 0) setTimeout(() => removeToast(id), duration);
-}
+  toasts = [...toasts, { id, title, variant, duration }];
+  listeners.forEach((listener) => listener());
+  if (duration > 0) {
+    setTimeout(() => removeToast(id), duration);
+  }
+};
 
 function removeToast(id: number) {
   const next = toasts.filter(toast => toast.id !== id);
   if (next.length !== toasts.length) {
     toasts = next;
-    listeners.forEach(l => l());
+    listeners.forEach((listener) => listener());
   }
-}
+};
 
 type ToastItemProps = {
   toast: ToastRecord;
@@ -45,6 +48,7 @@ type ToastItemProps = {
     container: string;
     text: string;
     icon: string;
+    closeIcon: string;
   };
   onRemove: () => void;
 };
@@ -96,21 +100,20 @@ function ToastItem({ toast, iconVariant, stylesVariant, onRemove }: ToastItemPro
 
   return (
     <GestureDetector gesture={pan}>
-      <Animated.View style={animatedStyle}>
-        <Pressable onPress={handleRemove} className='pb-4'>
-          <View className={`rounded-lg p-4 flex-row items-start gap-3 border-1 ${stylesVariant.container}`}>
-            <Ionicons name={iconVariant as any} size={20} className={stylesVariant.icon} />
+      <Animated.View style={animatedStyle} className='w-full items-center'>
+        <Pressable onPress={handleRemove} className='w-full pb-4'>
+          <View className={`mx-auto min-h-14 w-full max-w-[420px] flex-row items-center gap-3 rounded-full border px-4 py-3 shadow-lg shadow-black/20 ${stylesVariant.container}`}>
+            <View className='h-8 w-8 items-center justify-center rounded-full'>
+              <Ionicons name={iconVariant as any} size={32} className={stylesVariant.icon} />
+            </View>
             <View className='flex-1'>
-              <Text className={`font-semibold text-lg ${stylesVariant.text}`} style={styles.title}>
+              <Text className={`text-lg font-semibold ${stylesVariant.text}`} numberOfLines={2}>
                 {toast.title}
               </Text>
-              {toast.description && (
-                <Text className={`mt-1 ${stylesVariant.text}`}>
-                  {toast.description}
-                </Text>
-              )}
             </View>
-            <Ionicons name='close' size={20} className={stylesVariant.icon} />
+            <View className='h-8 w-8 items-center justify-center rounded-full'>
+              <Ionicons name='close' size={32} className={stylesVariant.closeIcon} />
+            </View>
           </View>
         </Pressable>
       </Animated.View>
@@ -140,28 +143,31 @@ function ToastHost() {
     switch (variant) {
       case 'success':
         return {
-          container: 'bg-green-50 border-2 border-green-200',
-          text: 'text-green-800',
-          icon: 'text-green-600',
+          container: 'bg-emerald-500 border-emerald-400',
+          text: 'text-white',
+          icon: 'text-white',
+          closeIcon: 'text-white',
         };
       case 'destructive':
         return {
-          container: 'bg-red-50 border-2 border-red-200',
-          text: 'text-red-800',
-          icon: 'text-red-600',
+          container: 'bg-rose-500 border-rose-400',
+          text: 'text-white',
+          icon: 'text-white',
+          closeIcon: 'text-white',
         };
       default:
         return {
-          container: 'bg-blue-50 border-2 border-blue-200',
-          text: 'text-blue-800',
-          icon: 'text-blue-600',
+          container: 'bg-neutral-900 border-neutral-700',
+          text: 'text-white',
+          icon: 'text-white',
+          closeIcon: 'text-white',
         };
     }
   };
 
   return (
-    <View pointerEvents='box-none' className='absolute w-full px-4 sm:w-1/3' style={[styles.host, { top: insets.top + 20 }]}>
-      <View pointerEvents='box-none' className='w-full items-stretch gap-2'>
+    <View pointerEvents='box-none' className='absolute left-0 right-0 z-[9999] w-full px-4' style={{ top: insets.top + 16 }}>
+      <View pointerEvents='box-none' className='w-full items-center gap-2'>
         {current.map((toast) => {
           const iconVariant = getToastIcon(toast.variant);
           const stylesVariant = getToastStyles(toast.variant);
@@ -180,20 +186,9 @@ function ToastHost() {
   );
 };
 
-function Toast(title: string, options?: { variant?: ToastVariant; duration?: number; description?: string }) {
-  addToast(title, options?.variant ?? 'default', options?.duration ?? 6000, options?.description);
-}
+function Toast(title: string, options?: { variant?: ToastVariant; duration?: number }) {
+  addToast(title, options?.variant ?? 'default', options?.duration ?? 6000);
+};
 
 export { Toast, ToastHost };
 export type { ToastVariant, ToastRecord };
-
-const styles = StyleSheet.create({
-  host: {
-    right: 0,
-    zIndex: 9999,
-    position: 'absolute',
-  },
-  title: {
-    marginTop: -3,
-  },
-});

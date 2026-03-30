@@ -40,10 +40,9 @@ export const SignInContent = () => {
       await profileInit();
       router.replace('/dashboard');
     } catch (errors: any) {
-      const error = ErrorGet(errors.response.data);
-      Toast('Error', {
+      const error = ErrorGet(errors?.response?.data);
+      Toast(error, {
         variant: 'destructive',
-        description: error,
         duration: 6000,
       });
     } finally {

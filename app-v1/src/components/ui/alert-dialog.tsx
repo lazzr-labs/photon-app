@@ -34,7 +34,7 @@ function AlertDialogOverlay({
           className,
         )}
         {...props}>
-        <NativeOnlyAnimatedView entering={FadeIn.duration(200).delay(50)} exiting={FadeOut.duration(150)}>
+        <NativeOnlyAnimatedView className='w-full items-center' entering={FadeIn.duration(200).delay(50)} exiting={FadeOut.duration(150)}>
           <>{children}</>
         </NativeOnlyAnimatedView>
       </AlertDialogPrimitive.Overlay>

@@ -32,10 +32,9 @@ export const PasswordResetContent = () => {
       });
       router.replace('/sign-in');
     } catch (errors: any) {
-      const error = ErrorGet(errors.response.data);
-      Toast('Error', {
+      const error = ErrorGet(errors?.response?.data);
+      Toast(error, {
         variant: 'destructive',
-        description: error,
         duration: 6000,
       });
     } finally {
