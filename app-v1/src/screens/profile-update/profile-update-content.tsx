@@ -35,7 +35,7 @@ export const ProfileUpdateContent = () => {
           router.back();
         }
       } catch (errors: any) {
-        const error = errors?.response?.data ? ErrorGet(errors.response.data) : errors?.message ?? 'Something went wrong';
+        const error = ErrorGet(errors.response.data);
         Toast(error, {
           variant: 'destructive',
           duration: 6000,
