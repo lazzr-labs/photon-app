@@ -14,4 +14,4 @@ description: OpenAPI client and app API wiring. Use when adding or using API end
 ## Usage
 
 * Import API instances from **~/src/api** (e.g. **authApi**, **usersApi**). Call the generated methods (e.g. **authApi.signInAPI(...)**); auth is usually passed per call (e.g. token as last argument) where required.
-* Most API calls are made inside **Zustand stores**; some are used directly in screens or components. Use **ErrorGet** from **~/src/scripts/error** and **Toast** for user-facing errors.
+* Most API calls are made inside **Zustand stores**; some are used directly in screens or components. Use **ErrorGet** from **~/src/scripts/error**.
