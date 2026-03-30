@@ -1,14 +1,14 @@
-import { NativeOnlyAnimatedView } from '~/src/components/ui/native-only-animated-view';
-import { TextClassContext } from '~/src/components/ui/text';
-import { cn } from '~/src/lib/utils';
-import * as PopoverPrimitive from '@rn-primitives/popover';
 import * as React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
+import * as PopoverPrimitive from '@rn-primitives/popover';
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens';
 
-const Popover = PopoverPrimitive.Root;
+import { cn } from '~/src/lib/utils';
+import { TextClassContext } from '~/src/components/ui/text';
+import { NativeOnlyAnimatedView } from '~/src/components/ui/native-only-animated-view';
 
+const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 
 const FullWindowOverlay = Platform.OS === 'ios' ? RNFullWindowOverlay : React.Fragment;
@@ -19,9 +19,9 @@ function PopoverContent({
   sideOffset = 4,
   portalHost,
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content> & {
-    portalHost?: string;
-  }) {
+}: PopoverPrimitive.ContentProps & React.RefAttributes<PopoverPrimitive.ContentRef> & {
+  portalHost?: string;
+}) {
   return (
     <PopoverPrimitive.Portal hostName={portalHost}>
       <FullWindowOverlay>
@@ -37,10 +37,10 @@ function PopoverContent({
                     web: cn(
                       'animate-in fade-in-0 zoom-in-95 origin-(--radix-popover-content-transform-origin) cursor-auto',
                       props.side === 'bottom' && 'slide-in-from-top-2',
-                      props.side === 'top' && 'slide-in-from-bottom-2'
+                      props.side === 'top' && 'slide-in-from-bottom-2',
                     ),
                   }),
-                  className
+                  className,
                 )}
                 {...props}
               />
