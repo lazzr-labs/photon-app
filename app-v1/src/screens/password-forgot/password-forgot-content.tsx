@@ -27,7 +27,7 @@ export const PasswordForgotContent = () => {
       });
       router.replace('/password-reset');
     } catch (errors: any) {
-      const error = ErrorGet(errors.response.data);
+      const error = ErrorGet(errors?.response?.data);
       Toast(error, {
         variant: 'destructive',
         duration: 6000,
