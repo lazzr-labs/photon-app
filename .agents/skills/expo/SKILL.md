@@ -31,7 +31,7 @@ description: Expo/React Native template patterns. Use when editing an Expo app t
 
 * **src/api.ts** instantiates OpenAPI classes with **Configuration**, **process.env.EXPO_PUBLIC_API_URL**, and a shared Axios instance. Export one instance per API (e.g. **authApi**, **usersApi**).
 * Auth: token passed per call (e.g. **usersApi.profileGetAPI(token)**). Token from **AuthStore.getState().authToken** or **AsyncStorage**.
-* On API errors use **ErrorGet(errors?.response?.data)** from **~/src/scripts/error**.
+* On API errors use **ErrorGet(errors?.response?.data)** from **~/src/scripts/error** and show **Toast('Error', { variant: 'destructive', description: error })**.
 
 ## Forms
 
@@ -40,9 +40,9 @@ description: Expo/React Native template patterns. Use when editing an Expo app t
 
 ## UI
 
-* Use React Native standard components (Text, TextInput, View, Image, Pressable, etc.). Shared styles in **src/theme/** (typography, inputStyles, colors).
+* Primitives in **src/components/ui/** (button, input, text, avatar, etc.). Use **cn()** from **~/src/lib/utils** and **cva** for variants.
 * Web-only styles (focus, hover) wrapped in **Platform.select({ web: '...' })**.
-* **PortalHost** from **@rn-primitives/portal** in root layout when using portals.
+* **Toast** and **ToastHost** from **~/src/components/toast**; **PortalHost** from **@rn-primitives/portal** in root layout.
 
 ## Conventions
 
