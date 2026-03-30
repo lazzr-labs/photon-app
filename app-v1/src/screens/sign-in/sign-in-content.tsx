@@ -41,9 +41,8 @@ export const SignInContent = () => {
       router.replace('/dashboard');
     } catch (errors: any) {
       const error = ErrorGet(errors.response.data);
-      Toast('Error', {
+      Toast(error, {
         variant: 'destructive',
-        description: error,
         duration: 6000,
       });
     } finally {

@@ -28,9 +28,8 @@ export const ProfileUpdateAvatar = () => {
   const imageChoose = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Toast('Permission Required', {
+      Toast('We need camera roll permission to update your profile picture.', {
         variant: 'destructive',
-        description: 'Sorry, we need camera roll permissions to update your profile picture.'
       });
       return;
     }
@@ -50,15 +49,13 @@ export const ProfileUpdateAvatar = () => {
       } else {
         try {
           await profileUpdateImage(imageUri);
-          Toast('Success', {
+          Toast('Profile picture updated successfully.', {
             variant: 'success',
-            description: 'Profile picture updated successfully.',
           });
         } catch (error: any) {
           console.log(error);
-          Toast('Error', {
+          Toast('Failed to update profile picture.', {
             variant: 'destructive',
-            description: 'Failed to update profile picture.',
           });
         }
       }
@@ -70,15 +67,13 @@ export const ProfileUpdateAvatar = () => {
     setImageUri('');
     try {
       await profileUpdateImage(uri);
-      Toast('Success', {
+      Toast('Profile picture updated successfully.', {
         variant: 'success',
-        description: 'Profile picture updated successfully.',
       });
     } catch (error: any) {
       console.log(error);
-      Toast('Error', {
+      Toast('Failed to update profile picture.', {
         variant: 'destructive',
-        description: 'Failed to update profile picture.',
       });
     }
   };

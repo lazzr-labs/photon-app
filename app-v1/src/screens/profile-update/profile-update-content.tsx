@@ -34,9 +34,8 @@ export const ProfileUpdateContent = () => {
           router.back();
         }
       } catch (error: any) {
-        Toast('Error', {
+        Toast(String(error), {
           variant: 'destructive',
-          description: error,
           duration: 6000,
         });
       } finally {
