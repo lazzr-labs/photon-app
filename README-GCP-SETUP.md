@@ -63,3 +63,17 @@
 **6. Subdomain**
 
     Create a subdomain with an A record to the IP
+
+###  Products
+
+**7. Favorite**
+
+    - Billing
+    - IAM & Admin
+    - APIs & Services
+    - Network Services
+    - VPC Network
+    - Cloud Storage
+    - Kubernetes Engine
+    - Cloud SQL
+    - Google Auth Platform

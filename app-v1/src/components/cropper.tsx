@@ -1,22 +1,19 @@
-import React, { useState, useRef } from 'react';
-import { ReactCrop, Crop, PixelCrop } from 'react-image-crop';
-import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, TouchableOpacity, View } from 'react-native';
+import { ReactCrop, type Crop, type PixelCrop } from 'react-image-crop';
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 
 import { Text } from '~/src/components/ui/text';
 
 import 'react-image-crop/dist/ReactCrop.css';
 
-interface CropperProps {
+type CropperProps = {
   uri: string;
   visible: boolean;
   onComplete: (uri: string) => void;
   onCancel: () => void;
 };
 
-async function CroppedImageGet(
-  image: HTMLImageElement,
-  crop: PixelCrop,
-): Promise<string> {
+const croppedImageGet = async (image: HTMLImageElement, crop: PixelCrop): Promise<string> => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
@@ -65,25 +62,37 @@ export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) =>
   const [cropCompleted, setCropCompleted] = useState<PixelCrop>();
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const { width, height } = e.currentTarget;
+  useEffect(() => {
+    if (!visible) {
+      setCropCompleted(undefined);
+    }
+  }, [visible, uri]);
+
+  const onImageLoad = (event: SyntheticEvent<HTMLImageElement>) => {
+    const { width, height } = event.currentTarget;
     const size = Math.min(width, height) * 0.8;
-    const x = (width - size) / 2;
-    const y = (height - size) / 2;
-    const crop: Crop = {
+    const cropCentered: Crop = {
       unit: 'px',
-      x: x,
-      y: y,
+      x: (width - size) / 2,
+      y: (height - size) / 2,
       width: size,
       height: size,
     };
-    setCrop(crop);
+
+    setCrop(cropCentered);
+    setCropCompleted({
+      x: cropCentered.x,
+      y: cropCentered.y,
+      width: cropCentered.width,
+      height: cropCentered.height,
+      unit: 'px',
+    });
   };
 
   const imageSave = async () => {
     if (cropCompleted && imageRef.current) {
       try {
-        const croppedImageUrl = await CroppedImageGet(imageRef.current, cropCompleted);
+        const croppedImageUrl = await croppedImageGet(imageRef.current, cropCompleted);
         onComplete(croppedImageUrl);
       } catch (errors) {
         console.error('Error cropping image:', errors);
@@ -95,16 +104,10 @@ export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) =>
 
   return (
     <Modal visible={visible} transparent animationType='fade'>
-      <View style={styles.container}>
+      <View className='flex-1 bg-black/95'>
 
-        <View style={styles.cropContainer}>
-          <ReactCrop
-            aspect={1}
-            crop={crop}
-            onChange={(c) => setCrop(c)}
-            onComplete={(c) => setCropCompleted(c)}
-            circularCrop
-          >
+        <View className='flex-1 items-center justify-center p-5'>
+          <ReactCrop aspect={1} crop={crop} onChange={setCrop} onComplete={setCropCompleted} circularCrop>
             <img
               src={uri}
               ref={imageRef}
@@ -115,13 +118,13 @@ export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) =>
           </ReactCrop>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
+        <View className='flex-row justify-between gap-4 p-5'>
+          <TouchableOpacity onPress={onCancel} className='flex-1 items-center rounded-lg bg-gray-500 p-4'>
             <Text className='text-lg font-semibold text-white'>
               Cancel
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={imageSave} style={styles.saveButton}>
+          <TouchableOpacity onPress={imageSave} className='flex-1 items-center rounded-lg bg-blue-500 p-4'>
             <Text className='text-lg font-semibold text-white'>
               Save
             </Text>
@@ -132,36 +135,3 @@ export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) =>
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.95)',
-  },
-  cropContainer: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    gap: 16,
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cancelButton: {
-    flex: 1,
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    backgroundColor: '#6b7280',
-  },
-  saveButton: {
-    flex: 1,
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    backgroundColor: '#3b82f6',
-  },
-});

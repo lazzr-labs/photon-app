@@ -7,6 +7,7 @@ All URIs are relative to *http://localhost*
 |[**passwordForgotPostAPI**](#passwordforgotpostapi) | **POST** /auth/passwordforgot | |
 |[**passwordResetPostAPI**](#passwordresetpostapi) | **POST** /auth/passwordreset | |
 |[**signInAPI**](#signinapi) | **POST** /auth/signin | |
+|[**signInSupabaseAPI**](#signinsupabaseapi) | **POST** /auth/signin/supabase | |
 |[**signUpAPI**](#signupapi) | **POST** /auth/signup | |
 
 # **passwordForgotPostAPI**
@@ -146,6 +147,58 @@ const { status, data } = await apiInstance.signInAPI(
 ### Return type
 
 **SignInOutputBody**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+|**0** | Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **signInSupabaseAPI**
+> SignInSupabaseOutputBody signInSupabaseAPI(signInSupabaseInputBody)
+
+
+### Example
+
+```typescript
+import {
+    AuthApi,
+    Configuration,
+    SignInSupabaseInputBody
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new AuthApi(configuration);
+
+let signInSupabaseInputBody: SignInSupabaseInputBody; //
+
+const { status, data } = await apiInstance.signInSupabaseAPI(
+    signInSupabaseInputBody
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **signInSupabaseInputBody** | **SignInSupabaseInputBody**|  | |
+
+
+### Return type
+
+**SignInSupabaseOutputBody**
 
 ### Authorization
 
