@@ -22,6 +22,8 @@ docs/ProfileUpdateInputBody.md
 docs/ProfileUpdateOutputBody.md
 docs/SignInInputBody.md
 docs/SignInOutputBody.md
+docs/SignInSupabaseInputBody.md
+docs/SignInSupabaseOutputBody.md
 docs/SignUpInputBody.md
 docs/SignUpOutputBody.md
 docs/UsersApi.md
