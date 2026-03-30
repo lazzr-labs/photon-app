@@ -1,5 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -22,7 +22,7 @@ function subscribe(listener: () => void) {
   return () => {
     listeners = listeners.filter((currentListener) => currentListener !== listener);
   };
-}
+};
 
 function addToast(title: string, variant: ToastVariant = 'default', duration = 6000) {
   const id = Date.now() + Math.random();
@@ -31,15 +31,15 @@ function addToast(title: string, variant: ToastVariant = 'default', duration = 6
   if (duration > 0) {
     setTimeout(() => removeToast(id), duration);
   }
-}
+};
 
 function removeToast(id: number) {
   const next = toasts.filter(toast => toast.id !== id);
   if (next.length !== toasts.length) {
     toasts = next;
-    listeners.forEach(l => l());
+    listeners.forEach((listener) => listener());
   }
-}
+};
 
 type ToastItemProps = {
   toast: ToastRecord;
@@ -188,8 +188,7 @@ function ToastHost() {
 
 function Toast(title: string, options?: { variant?: ToastVariant; duration?: number }) {
   addToast(title, options?.variant ?? 'default', options?.duration ?? 6000);
-}
+};
 
 export { Toast, ToastHost };
 export type { ToastVariant, ToastRecord };
-0
