@@ -170,6 +170,20 @@ export interface SignInOutputBody {
     '$schema'?: string;
     'token': string;
 }
+export interface SignInSupabaseInputBody {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    '$schema'?: string;
+    'token': string;
+}
+export interface SignInSupabaseOutputBody {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    '$schema'?: string;
+    'token': string;
+}
 export interface SignUpInputBody {
     /**
      * A URL to the JSON Schema for this object.
@@ -295,6 +309,40 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {SignInSupabaseInputBody} signInSupabaseInputBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        signInSupabaseAPI: async (signInSupabaseInputBody: SignInSupabaseInputBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'signInSupabaseInputBody' is not null or undefined
+            assertParamExists('signInSupabaseAPI', 'signInSupabaseInputBody', signInSupabaseInputBody)
+            const localVarPath = `/auth/signin/supabase`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json,application/problem+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(signInSupabaseInputBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {SignUpInputBody} signUpInputBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -374,6 +422,18 @@ export const AuthApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {SignInSupabaseInputBody} signInSupabaseInputBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async signInSupabaseAPI(signInSupabaseInputBody: SignInSupabaseInputBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInSupabaseOutputBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.signInSupabaseAPI(signInSupabaseInputBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.signInSupabaseAPI']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {SignUpInputBody} signUpInputBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -422,6 +482,15 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
+         * @param {SignInSupabaseInputBody} signInSupabaseInputBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        signInSupabaseAPI(signInSupabaseInputBody: SignInSupabaseInputBody, options?: RawAxiosRequestConfig): AxiosPromise<SignInSupabaseOutputBody> {
+            return localVarFp.signInSupabaseAPI(signInSupabaseInputBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {SignUpInputBody} signUpInputBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -464,6 +533,16 @@ export class AuthApi extends BaseAPI {
      */
     public signInAPI(signInInputBody: SignInInputBody, options?: RawAxiosRequestConfig) {
         return AuthApiFp(this.configuration).signInAPI(signInInputBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {SignInSupabaseInputBody} signInSupabaseInputBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public signInSupabaseAPI(signInSupabaseInputBody: SignInSupabaseInputBody, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).signInSupabaseAPI(signInSupabaseInputBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

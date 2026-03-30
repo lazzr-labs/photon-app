@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link, router } from 'expo-router';
-import { View, Pressable } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
+import { View, Pressable, Image } from 'react-native';
 import { useForm, Controller, useFormState } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { authApi } from '~/src/api';
 import { ErrorGet } from '~/src/scripts/error';
+import { GoogleSignIn } from '~/src/scripts/supabase';
 import { ProfileStore } from '~/src/stores/profile.store';
 
 import { Toast } from '~/src/components/toast';
@@ -21,6 +22,7 @@ export const SignInContent = () => {
 
   const [loading, setLoading] = useState(false);
   const [passwordBool, setPasswordBool] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const { control, handleSubmit, watch } = useForm();
   const { errors } = useFormState({ control });
@@ -46,6 +48,27 @@ export const SignInContent = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const googleSignInHook = async () => {
+    setGoogleLoading(true);
+    try {
+      const { token } = await GoogleSignIn();
+      const { data } = await authApi.signInSupabaseAPI({
+        token: token,
+      });
+      await AsyncStorage.setItem('token', data.token);
+      await profileInit();
+      router.replace('/dashboard');
+    } catch (errors: any) {
+      const error = errors?.response?.data?.detail ?? errors?.message ?? 'Google Sign In Failed';
+      Toast(error, {
+        variant: 'destructive',
+        duration: 6000,
+      });
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -116,6 +139,15 @@ export const SignInContent = () => {
           {loading && <ActivityIndicator size={16} color='white' />}
           <Text>
             Sign In
+          </Text>
+        </Button>
+
+        <Button onPress={googleSignInHook} disabled={googleLoading} variant='outline' size='xxl' className='mt-2 w-full gap-3 rounded-2xl border border-slate-200 bg-white px-5 shadow-sm shadow-black/5 dark:border-slate-700 dark:bg-slate-950'>
+          <View style={{ width: 20, height: 20 }}>
+            <Image source={require('~/src/assets/images/google/g-logo.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
+          </View>
+          <Text className='font-semibold tracking-tight text-slate-900 dark:text-slate-100'>
+            Continue with Google
           </Text>
         </Button>
 
