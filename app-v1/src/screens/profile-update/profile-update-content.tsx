@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { Toast } from '~/src/components/toast';
+import { ErrorGet } from '~/src/scripts/error';
 import { Text } from '~/src/components/ui/text';
 import { Input } from '~/src/components/ui/input';
 import { Button } from '~/src/components/ui/button';
@@ -33,8 +34,9 @@ export const ProfileUpdateContent = () => {
         if (router.canGoBack()) {
           router.back();
         }
-      } catch (error: any) {
-        Toast(String(error), {
+      } catch (errors: any) {
+        const error = errors?.response?.data ? ErrorGet(errors.response.data) : errors?.message ?? 'Something went wrong';
+        Toast(error, {
           variant: 'destructive',
           duration: 6000,
         });
