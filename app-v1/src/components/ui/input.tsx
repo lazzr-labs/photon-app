@@ -20,7 +20,8 @@ function Input({
         ),
         Platform.select({
           web: cn(
-            'placeholder:text-muted-foreground selection:bg-secondary selection:text-secondary-foreground',
+            'placeholder:text-muted-foreground',
+            'selection:bg-secondary selection:text-secondary-foreground',
             'outline-none transition-[color,box-shadow]',
             'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
             'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
