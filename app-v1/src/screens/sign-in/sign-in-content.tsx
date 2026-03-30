@@ -8,7 +8,7 @@ import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { authApi } from '~/src/api';
 import { ErrorGet } from '~/src/scripts/error';
-import { GoogleSignIn } from '~/src/lib/supabase';
+import { GoogleSignIn } from '~/src/scripts/supabase';
 import { ProfileStore } from '~/src/stores/profile.store';
 
 import { Toast } from '~/src/components/toast';
