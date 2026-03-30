@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { cssInterop } from 'nativewind';
 import * as ImagePicker from 'expo-image-picker';
 import { Pencil, UserRound } from 'lucide-react-native';
-import { View, Pressable, Platform, StyleSheet } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 
 import { Toast } from '~/src/components/toast';
 import { Icon } from '~/src/components/ui/icon';
@@ -28,13 +28,13 @@ export const ProfileUpdateAvatar = () => {
   const imageChoose = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Toast('We need camera roll permission to update your profile picture.', {
+      Toast('Photo permission required', {
         variant: 'destructive',
       });
       return;
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
@@ -49,12 +49,11 @@ export const ProfileUpdateAvatar = () => {
       } else {
         try {
           await profileUpdateImage(imageUri);
-          Toast('Profile picture updated successfully.', {
+          Toast('Profile Picture Updated Successfully', {
             variant: 'success',
           });
-        } catch (error: any) {
-          console.log(error);
-          Toast('Failed to update profile picture.', {
+        } catch (errors: any) {
+          Toast(errors?.message ?? 'Failed to update profile picture.', {
             variant: 'destructive',
           });
         }
@@ -67,12 +66,11 @@ export const ProfileUpdateAvatar = () => {
     setImageUri('');
     try {
       await profileUpdateImage(uri);
-      Toast('Profile picture updated successfully.', {
+      Toast('Profile Picture Updated Successfully', {
         variant: 'success',
       });
-    } catch (error: any) {
-      console.log(error);
-      Toast('Failed to update profile picture.', {
+    } catch (errors: any) {
+      Toast(errors?.message ?? 'Failed to update profile picture.', {
         variant: 'destructive',
       });
     }
@@ -88,14 +86,14 @@ export const ProfileUpdateAvatar = () => {
 
       <Pressable onPress={imageChoose} className='mb-4'>
         <View className='relative rounded-full bg-primary/25 p-2'>
-          <Avatar alt={'profile-image'} className='size-40'>
+          <Avatar alt='profile-image' className='size-40'>
             {profile?.image && <AvatarImage source={{ uri: profile.image }} />}
             <AvatarFallback>
               <Icon as={UserRound} size={160} strokeWidth={1.5} />
             </AvatarFallback>
           </Avatar>
-          <View style={styles.pencil} className='absolute z-10'>
-            <Pencil size={28} strokeWidth={2.5} className='text-primary' />
+          <View className='absolute right-3 top-3 z-10 items-center justify-center rounded-full bg-accent p-2'>
+            <Pencil size={20} strokeWidth={2.5} className='text-white' />
           </View>
         </View>
       </Pressable>
@@ -112,12 +110,3 @@ export const ProfileUpdateAvatar = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  pencil: {
-    top: 12,
-    right: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
