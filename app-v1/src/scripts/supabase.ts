@@ -5,8 +5,6 @@ import { createClient } from '@supabase/supabase-js';
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
 const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
-WebBrowser.maybeCompleteAuthSession();
-
 export type SupabaseAuthRedirectOptions = {
   scheme?: string;
   path?: string;
