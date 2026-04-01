@@ -1,4 +1,4 @@
-#!/bin/bash
+# !/bin/bash
 
 content=$(curl -L http://localhost:8080/openapi.json)
 echo $content > openapi-generator/openapi-schema.json
