@@ -93,7 +93,7 @@ function Text({
       role={variant ? ROLE[variant] : undefined}
       aria-level={variant ? ARIA_LEVEL[variant] : undefined}
       {...props}
-    />
+    ></Component>
   );
 }
 

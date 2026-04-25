@@ -22,3 +22,9 @@ description: React Native UI and behavior basics. Use when building components, 
 
 * Use **Platform.select({ ios: ..., android: ..., web: ... })** for platform-specific logic or styles. Default fallback last.
 * Prefer NativeWind **className** for styling. Use **StyleSheet.create** when you need dynamic values, dimensions (e.g. **height: number**), or styles that are awkward in Tailwind.
+
+## JSX formatting
+
+* Prefer explicit closing tags for multiline custom components so they can be collapsed during code review.
+* Use **<Input ...></Input>** instead of **<Input ... />** when the component spans multiple lines.
+* Self-closing tags are fine for simple one-line visual components like **Image** or **Icon**, especially when they are easy to scan and unlikely to need collapsing.

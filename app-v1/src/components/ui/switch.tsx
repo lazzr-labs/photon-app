@@ -28,7 +28,7 @@ function Switch({
           }),
           props.checked ? 'dark:bg-primary-foreground translate-x-3.5' : 'dark:bg-foreground translate-x-0',
         )}
-      />
+      ></SwitchPrimitives.Thumb>
     </SwitchPrimitives.Root>
   );
 }

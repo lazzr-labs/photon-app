@@ -62,7 +62,7 @@ function AlertDialogContent({
             className,
           )}
           {...props}
-        />
+        ></AlertDialogPrimitive.Content>
       </AlertDialogOverlay>
     </AlertDialogPortal>
   );
@@ -71,7 +71,7 @@ function AlertDialogContent({
 function AlertDialogHeader({ className, ...props }: ViewProps) {
   return (
     <TextClassContext.Provider value='text-center sm:text-left'>
-      <View className={cn('flex flex-col gap-2', className)} {...props} />
+      <View className={cn('flex flex-col gap-2', className)} {...props}></View>
     </TextClassContext.Provider>
   );
 }
@@ -81,7 +81,7 @@ function AlertDialogFooter({ className, ...props }: ViewProps) {
     <View
       className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)}
       {...props}
-    />
+    ></View>
   );
 }
 
@@ -93,7 +93,7 @@ function AlertDialogTitle({
     <AlertDialogPrimitive.Title
       className={cn('text-foreground text-lg font-semibold', className)}
       {...props}
-    />
+    ></AlertDialogPrimitive.Title>
   );
 }
 
@@ -106,7 +106,7 @@ function AlertDialogDescription({
     <AlertDialogPrimitive.Description
       className={cn('text-muted-foreground text-sm', className)}
       {...props}
-    />
+    ></AlertDialogPrimitive.Description>
   );
 }
 
@@ -116,7 +116,7 @@ function AlertDialogAction({
 }: AlertDialogPrimitive.ActionProps & React.RefAttributes<AlertDialogPrimitive.ActionRef>) {
   return (
     <TextClassContext.Provider value={buttonTextVariants({ className })}>
-      <AlertDialogPrimitive.Action className={cn(buttonVariants(), className)} {...props} />
+      <AlertDialogPrimitive.Action className={cn(buttonVariants(), className)} {...props}></AlertDialogPrimitive.Action>
     </TextClassContext.Provider>
   );
 }
@@ -130,7 +130,7 @@ function AlertDialogCancel({
       <AlertDialogPrimitive.Cancel
         className={cn(buttonVariants({ variant: 'outline' }), className)}
         {...props}
-      />
+      ></AlertDialogPrimitive.Cancel>
     </TextClassContext.Provider>
   );
 }

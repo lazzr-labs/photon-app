@@ -104,7 +104,7 @@ export const ProfileUpdateAvatar = () => {
           visible={showCropper}
           onComplete={onComplete}
           onCancel={onCancel}
-        />
+        ></Cropper>
       )}
 
     </View>
