@@ -1,0 +1,7 @@
+{
+  "js/ts.tsdk.path": "app-v1/node_modules/typescript/lib",
+  "js/ts.implicitProjectConfig.promptUseWorkspaceTsdk": true,
+  "eslint.workingDirectories": [
+    "app-v1"
+  ]
+}
