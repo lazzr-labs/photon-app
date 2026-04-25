@@ -34,7 +34,7 @@ function SelectValue({
         className,
       )}
       {...props}
-    />
+    ></SelectPrimitive.Value>
   );
 }
 
@@ -139,7 +139,7 @@ function SelectLabel({
     <SelectPrimitive.Label
       className={cn('text-muted-foreground px-2 py-2 text-xs', className)}
       {...props}
-    />
+    ></SelectPrimitive.Label>
   );
 }
 
@@ -181,7 +181,7 @@ function SelectSeparator({
         className,
       )}
       {...props}
-    />
+    ></SelectPrimitive.Separator>
   );
 }
 

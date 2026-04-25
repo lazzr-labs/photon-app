@@ -178,7 +178,7 @@ function ToastHost() {
               iconVariant={iconVariant}
               stylesVariant={stylesVariant}
               onRemove={() => removeToast(toast.id)}
-            />
+            ></ToastItem>
           );
         })}
       </View>

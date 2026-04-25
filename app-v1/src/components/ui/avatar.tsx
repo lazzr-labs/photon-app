@@ -13,7 +13,7 @@ function Avatar({
         className,
       )}
       {...props}
-    />
+    ></AvatarPrimitive.Root>
   );
 }
 
@@ -28,7 +28,7 @@ function AvatarImage({
         className,
       )}
       {...props}
-    />
+    ></AvatarPrimitive.Image>
   );
 }
 
@@ -43,7 +43,7 @@ function AvatarFallback({
         className,
       )}
       {...props}
-    />
+    ></AvatarPrimitive.Fallback>
   );
 }
 
