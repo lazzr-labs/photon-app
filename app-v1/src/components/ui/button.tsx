@@ -109,7 +109,7 @@ function Button({ className, variant, size, ...props }: ButtonProps) {
         )}
         role='button'
         {...props}
-      />
+      ></Pressable>
     </TextClassContext.Provider>
   );
 }

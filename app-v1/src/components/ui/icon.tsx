@@ -33,7 +33,7 @@ function Icon({
       className={cn('text-foreground', className)}
       size={size}
       {...props}
-    />
+    ></IconImpl>
   );
 }
 

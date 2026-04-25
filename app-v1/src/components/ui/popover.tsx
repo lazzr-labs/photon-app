@@ -43,7 +43,7 @@ function PopoverContent({
                   className,
                 )}
                 {...props}
-              />
+              ></PopoverPrimitive.Content>
             </TextClassContext.Provider>
           </NativeOnlyAnimatedView>
         </PopoverPrimitive.Overlay>

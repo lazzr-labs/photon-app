@@ -97,7 +97,7 @@ function AccordionTrigger({
                     web: 'pointer-events-none translate-y-0.5 transition-transform duration-200',
                   })
                 )}
-              />
+              ></Icon>
             </Animated.View>
           </Trigger>
         </AccordionPrimitive.Trigger>

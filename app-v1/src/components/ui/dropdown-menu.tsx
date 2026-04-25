@@ -70,7 +70,7 @@ function DropdownMenuSubContent({
           className,
         )}
         {...props}
-      />
+      ></DropdownMenuPrimitive.SubContent>
     </NativeOnlyAnimatedView>
   );
 }
@@ -118,7 +118,7 @@ function DropdownMenuContent({
                   className,
                 )}
                 {...props}
-              />
+              ></DropdownMenuPrimitive.Content>
             </TextClassContext.Provider>
           </NativeOnlyAnimatedView>
         </DropdownMenuPrimitive.Overlay>
@@ -153,7 +153,7 @@ function DropdownMenuItem({
           className,
         )}
         {...props}
-      />
+      ></DropdownMenuPrimitive.Item>
     </TextClassContext.Provider>
   );
 }
@@ -186,7 +186,7 @@ function DropdownMenuCheckboxItem({
                 'text-foreground size-4',
                 Platform.select({ web: 'pointer-events-none' }),
               )}
-            />
+            ></Icon>
           </DropdownMenuPrimitive.ItemIndicator>
         </View>
         <>{children}</>
@@ -243,7 +243,7 @@ function DropdownMenuLabel({
         className,
       )}
       {...props}
-    />
+    ></DropdownMenuPrimitive.Label>
   );
 }
 
@@ -255,7 +255,7 @@ function DropdownMenuSeparator({
     <DropdownMenuPrimitive.Separator
       className={cn('bg-border -mx-1 my-1 h-px', className)}
       {...props}
-    />
+    ></DropdownMenuPrimitive.Separator>
   );
 }
 
@@ -264,7 +264,7 @@ function DropdownMenuShortcut({ className, ...props }: TextProps & React.RefAttr
     <Text
       className={cn('text-muted-foreground ml-auto text-xs tracking-widest', className)}
       {...props}
-    />
+    ></Text>
   );
 }
 

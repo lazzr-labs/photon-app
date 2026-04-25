@@ -37,7 +37,7 @@ function Alert({
           <Icon
             as={icon}
             className={cn('size-4 z-50', variant === 'destructive' && 'text-destructive', iconClassName)}
-          />
+          ></Icon>
         </View>
         {children}
       </View>
@@ -50,10 +50,10 @@ function AlertTitle({
   ...props
 }: React.ComponentProps<typeof Text> & React.RefAttributes<Text>) {
   return (
-    <Text
-      className={cn('mb-1 ml-0.5 min-h-4 pl-6 font-medium leading-none tracking-tight', className)}
-      {...props}
-    />
+      <Text
+        className={cn('mb-1 ml-0.5 min-h-4 pl-6 font-medium leading-none tracking-tight', className)}
+        {...props}
+    ></Text>
   );
 }
 
@@ -70,7 +70,7 @@ function AlertDescription({
         className,
       )}
       {...props}
-    />
+    ></Text>
   );
 }
 
