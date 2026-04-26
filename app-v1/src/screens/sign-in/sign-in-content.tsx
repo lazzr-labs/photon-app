@@ -143,7 +143,7 @@ export const SignInContent = () => {
 
         <Button onPress={googleSignInHook} disabled={googleLoading} variant='outline' size='xxl' className='mt-2 w-full gap-3 rounded-2xl border border-slate-200 bg-white px-5 shadow-sm shadow-black/5 dark:border-slate-700 dark:bg-slate-950'>
           <View style={{ width: 20, height: 20 }}>
-            <Image source={require('~/src/assets/images/google/g-logo.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
+            <Image source={require('~/src/assets/images/platforms/g-logo.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
           </View>
           <Text className='font-semibold tracking-tight text-slate-900 dark:text-slate-100'>
             Continue with Google
