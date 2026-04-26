@@ -4,6 +4,8 @@ api.ts
 base.ts
 common.ts
 configuration.ts
+docs/AddressPlace.md
+docs/AddressPlaceAutocomplete.md
 docs/AuthApi.md
 docs/ErrorDetail.md
 docs/ErrorModel.md
@@ -13,7 +15,11 @@ docs/PasswordForgotPostInputBody.md
 docs/PasswordForgotPostOutputBody.md
 docs/PasswordResetPostInputBody.md
 docs/PasswordResetPostOutputBody.md
+docs/PlaceGetOutputBody.md
+docs/PlacesApi.md
+docs/PlacesGetOutputBody.md
 docs/Profile.md
+docs/ProfileDeleteOutputBody.md
 docs/ProfileGetOutputBody.md
 docs/ProfileImageUpdateOutputBody.md
 docs/ProfileUpdateEmailInputBody.md
@@ -26,6 +32,7 @@ docs/SignInSupabaseInputBody.md
 docs/SignInSupabaseOutputBody.md
 docs/SignUpInputBody.md
 docs/SignUpOutputBody.md
+docs/StructuredFormat.md
 docs/UsersApi.md
 git_push.sh
 index.ts

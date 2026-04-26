@@ -2,7 +2,7 @@ name: Deploy Stag
 
 on:
   push:
-    branches: ["develop"]
+    branches: [ "develop" ]
 
 jobs:
   docker:
