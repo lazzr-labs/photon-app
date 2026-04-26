@@ -23,6 +23,21 @@ import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
+export interface AddressPlace {
+    'alpha'?: string;
+    'components'?: { [key: string]: string; };
+    'country'?: string;
+    'description': string;
+    'formatted_address'?: string;
+    'latitude'?: number;
+    'longitude'?: number;
+    'place_id': string;
+}
+export interface AddressPlaceAutocomplete {
+    'description': string;
+    'place_id': string;
+    'structured_formatting'?: StructuredFormat;
+}
 export interface ErrorDetail {
     /**
      * Where the error occurred, e.g. \'body.items[3].tags\' or \'path.thing-id\'
@@ -100,12 +115,33 @@ export interface PasswordResetPostOutputBody {
     '$schema'?: string;
     'message': string;
 }
+export interface PlaceGetOutputBody {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    '$schema'?: string;
+    'object': AddressPlace;
+}
+export interface PlacesGetOutputBody {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    '$schema'?: string;
+    'list': Array<AddressPlaceAutocomplete> | null;
+}
 export interface Profile {
     'created': string;
     'email': string;
     'id': number;
     'image': string;
     'name': string;
+}
+export interface ProfileDeleteOutputBody {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    '$schema'?: string;
+    'object': Profile;
 }
 export interface ProfileGetOutputBody {
     /**
@@ -198,6 +234,10 @@ export interface SignUpOutputBody {
      */
     '$schema'?: string;
     'token': string;
+}
+export interface StructuredFormat {
+    'main_text': string;
+    'secondary_text': string;
 }
 
 /**
@@ -649,10 +689,219 @@ export class HomeApi extends BaseAPI {
 
 
 /**
+ * PlacesApi - axios parameter creator
+ */
+export const PlacesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {string} placeId 
+         * @param {string} [authorization] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        placeGetAPI: async (placeId: string, authorization?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'placeId' is not null or undefined
+            assertParamExists('placeGetAPI', 'placeId', placeId)
+            const localVarPath = `/places/{place_id}`
+                .replace('{place_id}', encodeURIComponent(String(placeId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json,application/problem+json';
+
+            if (authorization != null) {
+                localVarHeaderParameter['Authorization'] = String(authorization);
+            }
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} [authorization] 
+         * @param {string} [search] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        placesGetAPI: async (authorization?: string, search?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/places`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (search !== undefined) {
+                localVarQueryParameter['search'] = search;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json,application/problem+json';
+
+            if (authorization != null) {
+                localVarHeaderParameter['Authorization'] = String(authorization);
+            }
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * PlacesApi - functional programming interface
+ */
+export const PlacesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PlacesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {string} placeId 
+         * @param {string} [authorization] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async placeGetAPI(placeId: string, authorization?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlaceGetOutputBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.placeGetAPI(placeId, authorization, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PlacesApi.placeGetAPI']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} [authorization] 
+         * @param {string} [search] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async placesGetAPI(authorization?: string, search?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlacesGetOutputBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.placesGetAPI(authorization, search, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PlacesApi.placesGetAPI']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * PlacesApi - factory interface
+ */
+export const PlacesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PlacesApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {string} placeId 
+         * @param {string} [authorization] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        placeGetAPI(placeId: string, authorization?: string, options?: RawAxiosRequestConfig): AxiosPromise<PlaceGetOutputBody> {
+            return localVarFp.placeGetAPI(placeId, authorization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} [authorization] 
+         * @param {string} [search] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        placesGetAPI(authorization?: string, search?: string, options?: RawAxiosRequestConfig): AxiosPromise<PlacesGetOutputBody> {
+            return localVarFp.placesGetAPI(authorization, search, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * PlacesApi - object-oriented interface
+ */
+export class PlacesApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} placeId 
+     * @param {string} [authorization] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public placeGetAPI(placeId: string, authorization?: string, options?: RawAxiosRequestConfig) {
+        return PlacesApiFp(this.configuration).placeGetAPI(placeId, authorization, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} [authorization] 
+     * @param {string} [search] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public placesGetAPI(authorization?: string, search?: string, options?: RawAxiosRequestConfig) {
+        return PlacesApiFp(this.configuration).placesGetAPI(authorization, search, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * UsersApi - axios parameter creator
  */
 export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @param {string} [authorization] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        profileDeleteAPI: async (authorization?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/users/profile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json,application/problem+json';
+
+            if (authorization != null) {
+                localVarHeaderParameter['Authorization'] = String(authorization);
+            }
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @param {string} [authorization] 
@@ -820,6 +1069,18 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async profileDeleteAPI(authorization?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProfileDeleteOutputBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.profileDeleteAPI(authorization, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.profileDeleteAPI']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} [authorization] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async profileGetAPI(authorization?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProfileGetOutputBody>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.profileGetAPI(authorization, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
@@ -880,6 +1141,15 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        profileDeleteAPI(authorization?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProfileDeleteOutputBody> {
+            return localVarFp.profileDeleteAPI(authorization, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} [authorization] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         profileGetAPI(authorization?: string, options?: RawAxiosRequestConfig): AxiosPromise<ProfileGetOutputBody> {
             return localVarFp.profileGetAPI(authorization, options).then((request) => request(axios, basePath));
         },
@@ -920,6 +1190,16 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
  * UsersApi - object-oriented interface
  */
 export class UsersApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} [authorization] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public profileDeleteAPI(authorization?: string, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).profileDeleteAPI(authorization, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {string} [authorization] 
