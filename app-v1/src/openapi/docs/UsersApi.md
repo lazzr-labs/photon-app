@@ -4,10 +4,62 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
+|[**profileDeleteAPI**](#profiledeleteapi) | **DELETE** /users/profile | |
 |[**profileGetAPI**](#profilegetapi) | **GET** /users/profile | |
 |[**profileImageUpdateAPI**](#profileimageupdateapi) | **POST** /users/profile/image | |
 |[**profileUpdateAPI**](#profileupdateapi) | **PUT** /users/profile | |
 |[**profileUpdateEmailAPI**](#profileupdateemailapi) | **PUT** /users/profile/email | |
+
+# **profileDeleteAPI**
+> ProfileDeleteOutputBody profileDeleteAPI()
+
+
+### Example
+
+```typescript
+import {
+    UsersApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new UsersApi(configuration);
+
+let authorization: string; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.profileDeleteAPI(
+    authorization
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **authorization** | [**string**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**ProfileDeleteOutputBody**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json, application/problem+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+|**0** | Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **profileGetAPI**
 > ProfileGetOutputBody profileGetAPI()
