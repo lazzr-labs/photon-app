@@ -8,8 +8,8 @@ import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { authApi } from '~/src/api';
 import { ErrorGet } from '~/src/scripts/error';
-import { GoogleSignIn } from '~/src/scripts/supabase';
 import { ProfileStore } from '~/src/stores/profile.store';
+import { AppleSignIn, GoogleSignIn } from '~/src/scripts/supabase';
 
 import { Toast } from '~/src/components/toast';
 import { Icon } from '~/src/components/ui/icon';
@@ -22,6 +22,7 @@ export const SignUpContent = () => {
 
   const [loading, setLoading] = useState(false);
   const [passwordBool, setPasswordBool] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const { control, handleSubmit, watch } = useForm();
@@ -72,6 +73,27 @@ export const SignUpContent = () => {
       });
     } finally {
       setGoogleLoading(false);
+    }
+  };
+
+  const appleSignInHook = async () => {
+    setAppleLoading(true);
+    try {
+      const { token } = await AppleSignIn();
+      const { data } = await authApi.signInSupabaseAPI({
+        token: token,
+      });
+      await AsyncStorage.setItem('token', data.token);
+      await profileInit();
+      router.replace('/dashboard');
+    } catch (errors: any) {
+      const error = errors?.response?.data?.detail ?? errors?.message ?? 'Apple Sign In Failed';
+      Toast(error, {
+        variant: 'destructive',
+        duration: 6000,
+      });
+    } finally {
+      setAppleLoading(false);
     }
   };
 
@@ -157,6 +179,15 @@ export const SignUpContent = () => {
           </View>
           <Text className='font-semibold tracking-tight text-slate-900 dark:text-slate-100'>
             Continue with Google
+          </Text>
+        </Button>
+
+        <Button onPress={appleSignInHook} disabled={appleLoading} variant='outline' size='xxl' className='w-full gap-3 rounded-2xl border border-slate-200 bg-white px-5 shadow-sm shadow-black/5 dark:border-slate-700 dark:bg-slate-950'>
+          <View style={{ width: 20, height: 20 }}>
+            <Image source={require('~/src/assets/images/platforms/ios-logo.png')} style={{ width: 17, height: 20 }} resizeMode='contain' />
+          </View>
+          <Text className='font-semibold tracking-tight text-slate-900 dark:text-slate-100'>
+            Continue with iOS
           </Text>
         </Button>
 

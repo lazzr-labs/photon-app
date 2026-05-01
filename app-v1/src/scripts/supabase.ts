@@ -1,6 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri } from 'expo-auth-session';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type Provider } from '@supabase/supabase-js';
 
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
 const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
@@ -50,11 +50,11 @@ export function RedirectUriGet(options?: SupabaseAuthRedirectOptions): string {
   });
 };
 
-export async function GoogleSignIn(options?: SupabaseAuthRedirectOptions): Promise<{ token: string; email?: string }> {
+async function SupabaseOAuthSignIn(provider: Provider, options?: SupabaseAuthRedirectOptions): Promise<{ token: string; email?: string }> {
   const client = SupabaseClientGet();
   const redirectTo = RedirectUriGet(options);
   const { data, error: oauthError } = await client.auth.signInWithOAuth({
-    provider: 'google',
+    provider: provider,
     options: { redirectTo, skipBrowserRedirect: true },
   });
   if (oauthError) throw oauthError;
@@ -69,4 +69,12 @@ export async function GoogleSignIn(options?: SupabaseAuthRedirectOptions): Promi
     token: session.access_token,
     email: session.user?.email ?? undefined,
   };
+};
+
+export async function GoogleSignIn(options?: SupabaseAuthRedirectOptions): Promise<{ token: string; email?: string }> {
+  return SupabaseOAuthSignIn('google', options);
+};
+
+export async function AppleSignIn(options?: SupabaseAuthRedirectOptions): Promise<{ token: string; email?: string }> {
+  return SupabaseOAuthSignIn('apple', options);
 };
