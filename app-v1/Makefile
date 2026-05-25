@@ -42,17 +42,18 @@ expo-prebuild-ios-network:
 # expo export
 expo-export-stag:
 	cp .env.stag .env
-	npx expo export --platform web
+	npx expo export --platform web --clear
 
 expo-export-prod:
 	cp .env.prod .env
-	npx expo export --platform web
+	npx expo export --platform web --clear
 
 # deploy
 deploy-delete-stag:
 	node deploy-gcp/deploy-delete.js --env=stag
 
 deploy-upload-stag:
+	node deploy-gcp/routes-prepare.js
 	node deploy-gcp/deploy-upload.js --env=stag
 
 deploy-stag:
@@ -64,6 +65,7 @@ deploy-delete-prod:
 	node deploy-gcp/deploy-delete.js --env=prod
 
 deploy-upload-prod:
+	node deploy-gcp/routes-prepare.js
 	node deploy-gcp/deploy-upload.js --env=prod
 
 deploy-prod:
