@@ -16,7 +16,6 @@ const fileStorageUpload = async (fileStream, filePathStorage) => {
     if (path.extname(filePathStorage) === '') {
       metadata.contentType = 'text/html';
     }
-
     if (filePathStorage === 'index.html') {
       metadata = {
         contentEncoding: 'gzip',
