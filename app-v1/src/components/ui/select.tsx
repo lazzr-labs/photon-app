@@ -63,7 +63,7 @@ function SelectTrigger({
       )}
       {...props}>
       <>{children}</>
-      <Icon as={ChevronDown} aria-hidden={true} className="size-4 text-muted-foreground" />
+      <Icon as={ChevronDown} aria-hidden={true} className='size-4 text-muted-foreground' />
     </SelectPrimitive.Trigger>
   );
 }
@@ -83,8 +83,8 @@ function SelectContent({
     <SelectPrimitive.Portal hostName={portalHost}>
       <FullWindowOverlay>
         <SelectPrimitive.Overlay style={Platform.select({ native: StyleSheet.absoluteFill })}>
-          <TextClassContext.Provider value="text-popover-foreground">
-            <NativeOnlyAnimatedView className="z-50" entering={FadeIn} exiting={FadeOut}>
+          <TextClassContext.Provider value='text-popover-foreground'>
+            <NativeOnlyAnimatedView className='z-50' entering={FadeIn} exiting={FadeOut}>
               <SelectPrimitive.Content
                 className={cn(
                   'bg-popover border-border relative z-50 min-w-[12rem] rounded-2xl border shadow-md shadow-black/5',
@@ -159,12 +159,12 @@ function SelectItem({
         className,
       )}
       {...props}>
-      <View className="absolute right-2 flex size-3.5 items-center justify-center">
+      <View className='absolute right-2 flex size-3.5 items-center justify-center'>
         <SelectPrimitive.ItemIndicator>
-          <Icon as={Check} className="size-4 shrink-0 text-white" />
+          <Icon as={Check} className='size-4 shrink-0 text-white' />
         </SelectPrimitive.ItemIndicator>
       </View>
-      <SelectPrimitive.ItemText className="select-none text-sm text-white" />
+      <SelectPrimitive.ItemText className='select-none text-sm text-white' />
     </SelectPrimitive.Item>
   );
 }
@@ -196,7 +196,7 @@ function SelectScrollUpButton({
     <SelectPrimitive.ScrollUpButton
       className={cn('flex cursor-default items-center justify-center py-1', className)}
       {...props}>
-      <Icon as={ChevronUpIcon} className="size-4" />
+      <Icon as={ChevronUpIcon} className='size-4' />
     </SelectPrimitive.ScrollUpButton>
   );
 }
@@ -212,7 +212,7 @@ function SelectScrollDownButton({
     <SelectPrimitive.ScrollDownButton
       className={cn('flex cursor-default items-center justify-center py-1', className)}
       {...props}>
-      <Icon as={ChevronDownIcon} className="size-4" />
+      <Icon as={ChevronDownIcon} className='size-4' />
     </SelectPrimitive.ScrollDownButton>
   );
 }

@@ -27,7 +27,7 @@ function PopoverContent({
       <FullWindowOverlay>
         <PopoverPrimitive.Overlay style={Platform.select({ native: StyleSheet.absoluteFill })}>
           <NativeOnlyAnimatedView entering={FadeIn.duration(200)} exiting={FadeOut}>
-            <TextClassContext.Provider value="text-popover-foreground">
+            <TextClassContext.Provider value='text-popover-foreground'>
               <PopoverPrimitive.Content
                 align={align}
                 sideOffset={sideOffset}
