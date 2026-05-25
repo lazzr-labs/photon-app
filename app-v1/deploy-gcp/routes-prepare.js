@@ -2,9 +2,6 @@ import fs from 'fs';
 import path from 'path';
 
 const routes = [
-  'privacy',
-  'terms',
-  'support',
 ];
 
 const routesPrepare = async () => {
