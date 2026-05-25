@@ -12,6 +12,10 @@ const fileStorageUpload = async (fileStream, filePathStorage) => {
       contentEncoding: 'gzip',
       cacheControl: 'max-age=300, public',
     };
+
+    if (path.extname(filePathStorage) === '') {
+      metadata.contentType = 'text/html';
+    }
     if (filePathStorage === 'index.html') {
       metadata = {
         contentEncoding: 'gzip',
