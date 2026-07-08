@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AuthApi, Configuration, PlacesApi, UsersApi } from './openapi';
+import { Configuration, AuthApi, PlacesApi, UsersApi } from './openapi';
 
 const config = new Configuration();
 const axiosInstance = axios.create();
