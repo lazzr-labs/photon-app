@@ -4,6 +4,7 @@ import { useColorScheme } from 'nativewind';
 import { useState, useEffect } from 'react';
 import { SplashScreen, Stack } from 'expo-router';
 import { PortalHost } from '@rn-primitives/portal';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Theme, ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
@@ -64,15 +65,17 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView>
-      <ThemeProvider value={(colorScheme === 'dark') ? DARK_THEME : LIGHT_THEME}>
-        <StatusBar style={(colorScheme === 'dark') ? 'light' : 'dark'}></StatusBar>
-        <Stack>
-          <Stack.Screen name='(app)' options={{ headerShown: false }}></Stack.Screen>
-          <Stack.Screen name='(auth)' options={{ headerShown: false }}></Stack.Screen>
-        </Stack>
-        <ToastHost />
-        <PortalHost />
-      </ThemeProvider>
+      <KeyboardProvider>
+        <ThemeProvider value={(colorScheme === 'dark') ? DARK_THEME : LIGHT_THEME}>
+          <StatusBar style={(colorScheme === 'dark') ? 'light' : 'dark'}></StatusBar>
+          <Stack>
+            <Stack.Screen name='(app)' options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name='(auth)' options={{ headerShown: false }}></Stack.Screen>
+          </Stack>
+          <ToastHost />
+          <PortalHost />
+        </ThemeProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   );
 };

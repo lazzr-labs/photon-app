@@ -3,7 +3,6 @@ import { router } from 'expo-router';
 import { View, Pressable } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { useForm, Controller, useFormState } from 'react-hook-form';
-import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { authApi } from '~/src/api';
 import { ErrorGet } from '~/src/scripts/error';
@@ -104,7 +103,7 @@ export const PasswordResetContent = () => {
         </View>
 
         <Button onPress={handleSubmit(passwordReset)} disabled={loading || !codeValue || !passwordValue} variant='default' size='xxl' className='mt-2'>
-          {loading && <ActivityIndicator size={16} color='white' />}
+          {loading && <View className='h-5 w-5 animate-spin rounded-full border-[3px] border-white/30 border-t-white' />}
           <Text>
             Submit
           </Text>

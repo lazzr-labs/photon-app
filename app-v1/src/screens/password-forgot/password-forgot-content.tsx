@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
 import { useForm, Controller, useFormState } from 'react-hook-form';
-import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { authApi } from '~/src/api';
 import { ErrorGet } from '~/src/scripts/error';
@@ -75,7 +74,7 @@ export const PasswordForgotContent = () => {
         </View>
 
         <Button onPress={handleSubmit(passwordForgot)} disabled={loading || !emailValue} variant='default' size='xxl' className='mt-2'>
-          {loading && <ActivityIndicator size={16} color='white' />}
+          {loading && <View className='h-5 w-5 animate-spin rounded-full border-[3px] border-white/30 border-t-white' />}
           <Text>
             Send
           </Text>
