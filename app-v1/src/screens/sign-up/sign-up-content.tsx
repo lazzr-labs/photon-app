@@ -4,7 +4,6 @@ import { Eye, EyeOff } from 'lucide-react-native';
 import { View, Pressable, Image } from 'react-native';
 import { useForm, Controller, useFormState } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { authApi } from '~/src/api';
 import { ErrorGet } from '~/src/scripts/error';
@@ -167,7 +166,7 @@ export const SignUpContent = () => {
         </View>
 
         <Button onPress={handleSubmit(signUp)} disabled={loading || !emailValue || !passwordValue} variant='default' size='xxl' className='mt-2'>
-          {loading && <ActivityIndicator size={16} color='white' />}
+          {loading && <View className='h-5 w-5 animate-spin rounded-full border-[3px] border-white/30 border-t-white' />}
           <Text>
             Sign Up
           </Text>
