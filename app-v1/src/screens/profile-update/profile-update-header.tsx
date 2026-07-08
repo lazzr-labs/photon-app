@@ -31,7 +31,7 @@ export const ProfileUpdateHeader = () => {
   const profileDeleteHook = async () => {
     try {
       await profileDelete();
-      Toast('Account deleted', {
+      Toast('Account Deleted', {
         variant: 'success',
         duration: 4500,
       });
