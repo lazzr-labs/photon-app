@@ -15,6 +15,7 @@ expo-start-network:
 	cp .env.network .env
 	npx expo start -c
 
+# expo run
 expo-run-ios-dev:
 	cp .env.dev .env
 	npx expo run:ios
@@ -27,16 +28,9 @@ expo-run-ios-network:
 	cp .env.network .env
 	npx expo run:ios
 
-expo-prebuild-ios-dev:
-	cp .env.dev .env
-	npx expo prebuild --platform ios --clean
-
+# expo prebuild
 expo-prebuild-ios-stag:
 	cp .env.stag .env
-	npx expo prebuild --platform ios --clean
-
-expo-prebuild-ios-network:
-	cp .env.network .env
 	npx expo prebuild --platform ios --clean
 
 # expo export
