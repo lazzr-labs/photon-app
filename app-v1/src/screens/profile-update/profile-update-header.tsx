@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { useColorScheme } from 'nativewind';
 import { View, Pressable } from 'react-native';
 import type { TriggerRef } from '@rn-primitives/popover';
-import { EllipsisVertical, Moon, Sun, Trash2 } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EllipsisVertical, Moon, Sun, Trash2 } from 'lucide-react-native';
 
 import { Toast } from '~/src/components/toast';
 import { Icon } from '~/src/components/ui/icon';
