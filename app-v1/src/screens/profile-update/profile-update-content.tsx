@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
-import { ActivityIndicator } from '@react-native-blossom-ui/components';
 
 import { Toast } from '~/src/components/toast';
 import { ErrorGet } from '~/src/scripts/error';
@@ -79,7 +78,7 @@ export const ProfileUpdateContent = () => {
         </View>
 
         <Button onPress={handleSubmit(update)} disabled={loading || !nameValue} variant='default' size='xxl' className='mt-2'>
-          {loading && <ActivityIndicator size={16} color='white' />}
+          {loading && <View className='h-5 w-5 animate-spin rounded-full border-[3px] border-white/30 border-t-white' />}
           <Text>
             Update
           </Text>
