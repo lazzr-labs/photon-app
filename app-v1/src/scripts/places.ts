@@ -1,5 +1,5 @@
 import { placesApi } from '~/src/api';
-import type { AddressPlace, AddressPlaceAutocomplete } from '~/src/openapi';
+import { AddressPlaceAutocomplete, AddressPlace } from '~/src/openapi';
 
 export const placesGet = async (search: string, authToken: string): Promise<AddressPlaceAutocomplete[] | null> => {
   try {
