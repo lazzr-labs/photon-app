@@ -45,12 +45,14 @@ export const ProfileUpdateHeader = () => {
 
   return (
     <>
+
       <View className='h-16 flex-row items-center'>
         <View className='ms-2'>
           <BackButton />
         </View>
         <View className='flex-1'></View>
         <View className='me-2 flex-row items-center gap-1'>
+
           <Pressable onPress={changeTheme}>
             {(colorScheme === 'dark') ? (
               <Icon as={Sun} size={48} />
@@ -74,6 +76,7 @@ export const ProfileUpdateHeader = () => {
               </Pressable>
             </PopoverContent>
           </Popover>
+
         </View>
       </View>
 
