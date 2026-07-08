@@ -1,8 +1,9 @@
-import { Icon } from '~/src/components/ui/icon';
-import { cn } from '~/src/lib/utils';
-import * as CheckboxPrimitive from '@rn-primitives/checkbox';
-import { Check } from 'lucide-react-native';
 import { Platform } from 'react-native';
+import { Check } from 'lucide-react-native';
+import * as CheckboxPrimitive from '@rn-primitives/checkbox';
+
+import { cn } from '~/src/lib/utils';
+import { Icon } from '~/src/components/ui/icon';
 
 const DEFAULT_HIT_SLOP = 24;
 
@@ -12,13 +13,14 @@ function Checkbox({
   indicatorClassName,
   iconClassName,
   ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root> & {
-    checkedClassName?: string;
-    indicatorClassName?: string;
-    iconClassName?: string;
-  }) {
+}: CheckboxPrimitive.RootProps & React.RefAttributes<CheckboxPrimitive.RootRef> & {
+  checkedClassName?: string;
+  indicatorClassName?: string;
+  iconClassName?: string;
+}) {
   return (
     <CheckboxPrimitive.Root
+      hitSlop={DEFAULT_HIT_SLOP}
       className={cn(
         'border-input dark:bg-input/30 size-4 shrink-0 rounded-[4px] border shadow-sm shadow-black/5',
         Platform.select({
@@ -27,18 +29,21 @@ function Checkbox({
         }),
         props.checked && cn('border-primary', checkedClassName),
         props.disabled && 'opacity-50',
-        className
+        className,
       )}
-      hitSlop={DEFAULT_HIT_SLOP}
-      {...props}>
-      <CheckboxPrimitive.Indicator
-        className={cn('bg-primary h-full w-full items-center justify-center', indicatorClassName)}>
+      {...props}
+    >
+      <CheckboxPrimitive.Indicator className={cn('bg-primary h-full w-full items-center justify-center', indicatorClassName)}>
         <Icon
           as={Check}
           size={12}
           strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
-          className={cn('text-primary-foreground', iconClassName)}
-        />
+          className={cn(
+            'text-primary-foreground',
+            Platform.select({ web: 'pointer-events-none' }),
+            iconClassName,
+          )}
+        ></Icon>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
