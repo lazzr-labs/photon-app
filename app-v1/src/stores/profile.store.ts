@@ -18,6 +18,7 @@ type Actions = {
   profileInit: () => Promise<void>;
   profileUpdate: (profile: Profile) => Promise<void>;
   profileUpdateImage: (uri: string) => Promise<void>;
+  profileDelete: () => Promise<void>;
   profileLogout: () => void;
 };
 
@@ -84,6 +85,17 @@ export const ProfileStore = create<State & Actions>()((set, get) => ({
       get().profileSet(profileResponse);
     } catch (errors: any) {
       const error = ErrorGet(errors.response.data);
+      throw error;
+    }
+  },
+  profileDelete: async () => {
+    const token = AuthStore.getState().authToken;
+    try {
+      await usersApi.profileDeleteAPI(token);
+      await get().profileClear();
+      router.navigate('/');
+    } catch (errors: any) {
+      const error = ErrorGet(errors?.response?.data);
       throw error;
     }
   },
