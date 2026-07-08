@@ -16,8 +16,9 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 
 export const ProfileUpdateHeader = () => {
   const { profileDelete } = ProfileStore();
-  const { colorScheme, setColorScheme } = useColorScheme();
+
   const popoverTriggerRef = useRef<TriggerRef>(null);
+  const { colorScheme, setColorScheme } = useColorScheme();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const changeTheme = () => {
