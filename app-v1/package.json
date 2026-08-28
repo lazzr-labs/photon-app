@@ -29,7 +29,7 @@
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "expo": "^57.0.18",
+    "expo": "^57.0.17",
     "expo-auth-session": "~57.0.10",
     "expo-constants": "~57.0.16",
     "expo-font": "~57.0.2",
