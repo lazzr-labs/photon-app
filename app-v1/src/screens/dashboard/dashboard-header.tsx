@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { UserRound } from 'lucide-react-native';
 
 import { Icon } from '~/src/components/ui/icon';
@@ -13,15 +13,15 @@ export const DashboardHeader = () => {
     <View className='h-16 flex-row items-center'>
       <View className='flex-1'></View>
       <View className='me-2'>
-        <Link href='/profile'>
-          <View className='rounded-full bg-primary/25 p-1'>
+        <Link href='/profile' asChild>
+          <Pressable className='rounded-full bg-primary/25 p-1'>
             <Avatar alt={'profile-image'} className='size-12'>
               {!!profile?.image && <AvatarImage source={{ uri: profile.image }} />}
               <AvatarFallback>
                 <Icon as={UserRound} size={48} strokeWidth={2.5} />
               </AvatarFallback>
             </Avatar>
-          </View>
+          </Pressable>
         </Link>
       </View>
     </View>
