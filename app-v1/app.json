@@ -10,8 +10,9 @@
       "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
       "expo-font",
+      "expo-router",
+      "expo-status-bar",
       "expo-web-browser",
       "./plugins/with-ios-xcode-identity"
     ],
