@@ -7,7 +7,7 @@ import { PortalHost } from '@rn-primitives/portal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Theme, ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { Theme, ThemeProvider, DefaultTheme, DarkTheme } from 'expo-router/react-navigation';
 import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
 
 import { NavTheme } from '~/src/theme';
