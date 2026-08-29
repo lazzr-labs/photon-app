@@ -47,6 +47,9 @@ export interface ErrorDetail {
      * Error message text
      */
     'message'?: string;
+    /**
+     * The value at the given location
+     */
     'value'?: any;
 }
 export interface ErrorModel {
