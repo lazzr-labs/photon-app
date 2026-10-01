@@ -47,7 +47,7 @@
       "appleTeamId": "",
       "bundleIdentifier": "com.photon.app",
       "version": "1.0.0",
-      "buildNumber": "2",
+      "buildNumber": "",
       "config": {
         "usesNonExemptEncryption": false
       },
