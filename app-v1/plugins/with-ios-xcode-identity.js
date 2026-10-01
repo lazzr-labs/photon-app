@@ -34,11 +34,9 @@ function withIosXcodeIdentity(config) {
         continue;
       }
 
-      buildSettings.CURRENT_PROJECT_VERSION = buildNumber;
-      if (appleTeamId) {
-        buildSettings.DEVELOPMENT_TEAM = appleTeamId;
-      }
       buildSettings.MARKETING_VERSION = version;
+      buildSettings.DEVELOPMENT_TEAM = appleTeamId;
+      buildSettings.CURRENT_PROJECT_VERSION = buildNumber;
       buildSettings.INFOPLIST_KEY_CFBundleDisplayName = displayName;
       buildSettings.INFOPLIST_KEY_LSApplicationCategoryType = `"${appCategory}"`;
     }
