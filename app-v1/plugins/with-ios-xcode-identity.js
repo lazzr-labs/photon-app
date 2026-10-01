@@ -9,6 +9,7 @@ const supportedOrientations = [
 
 function withIosXcodeIdentity(config) {
   const appCategory = config.ios?.infoPlist?.LSApplicationCategoryType;
+  const appleTeamId = config.ios?.appleTeamId;
   const buildNumber = config.ios?.buildNumber;
   const displayName = config.ios?.infoPlist?.CFBundleDisplayName ?? config.name;
   const version = config.ios?.version ?? config.version;
@@ -35,6 +36,9 @@ function withIosXcodeIdentity(config) {
       }
 
       buildSettings.CURRENT_PROJECT_VERSION = buildNumber;
+      if (appleTeamId) {
+        buildSettings.DEVELOPMENT_TEAM = appleTeamId;
+      }
       buildSettings.INFOPLIST_KEY_CFBundleDisplayName = displayName;
       buildSettings.INFOPLIST_KEY_LSApplicationCategoryType = `"${appCategory}"`;
       buildSettings.MARKETING_VERSION = version;
