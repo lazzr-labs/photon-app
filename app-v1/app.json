@@ -22,6 +22,14 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "enableSceneSupport": true
+          }
+        }
       ]
     ],
     "experiments": {
@@ -36,6 +44,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "appleTeamId": "",
       "bundleIdentifier": "com.photon.app",
       "version": "1.0.0",
       "buildNumber": "1",

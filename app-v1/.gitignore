@@ -1,5 +1,6 @@
 .expo/
 
+ios/
 dist/
 node_modules/
 
