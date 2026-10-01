@@ -8,10 +8,10 @@ const supportedOrientations = [
 ];
 
 function withIosXcodeIdentity(config) {
-  const appCategory = config.ios?.infoPlist?.LSApplicationCategoryType;
   const appleTeamId = config.ios?.appleTeamId;
   const buildNumber = config.ios?.buildNumber;
   const version = config.ios?.version ?? config.version;
+  const appCategory = config.ios?.infoPlist?.LSApplicationCategoryType;
   const displayName = config.ios?.infoPlist?.CFBundleDisplayName ?? config.name;
 
   config = withInfoPlist(config, (config) => {
