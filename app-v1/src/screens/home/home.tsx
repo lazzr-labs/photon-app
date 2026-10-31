@@ -1,20 +1,11 @@
-import { useEffect } from 'react';
+import { Link } from 'expo-router';
 import { View } from 'react-native';
-import { Link, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Text } from '~/src/components/ui/text';
-import { AuthStore } from '~/src/stores/auth.store';
 import { Button } from '~/src/components/ui/button';
 
 export const HomeScreen = () => {
-  useEffect(() => {
-    const authBool = AuthStore.getState().authBool;
-    if (authBool) {
-      router.replace('/dashboard');
-    }
-  }, []);
-
   return (
     <SafeAreaView>
       <View className='items-center'>

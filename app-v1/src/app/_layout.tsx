@@ -1,9 +1,9 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-import { useState, useEffect } from 'react';
-import { SplashScreen, Stack } from 'expo-router';
+import { useRef, useState, useEffect } from 'react';
 import { PortalHost } from '@rn-primitives/portal';
+import { SplashScreen, Stack, router, usePathname } from 'expo-router';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -12,6 +12,7 @@ import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700
 
 import { NavTheme } from '~/src/theme';
 import { ToastHost } from '~/src/components/toast';
+import { AuthStore } from '~/src/stores/auth.store';
 import { ProfileStore } from '~/src/stores/profile.store';
 import { AndroidNavigationBarSet } from '~/src/scripts/android-navigation-bar';
 
@@ -29,10 +30,15 @@ const DARK_THEME: Theme = {
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+  const pathname = usePathname();
   const { colorScheme, setColorScheme } = useColorScheme();
 
+  const { authBool } = AuthStore();
+  const { profileInit } = ProfileStore();
+
   const [apiLoaded, apiLoadedSet] = useState(false);
-  const [colorSchemeLoaded, colorSchemeLoadedSet] = useState(false);
+  const [themeLoaded, themeLoadedSet] = useState(false);
+  const themeInitRef = useRef(false);
 
   const [fontsLoaded] = useFonts({
     Poppins400: Poppins_400Regular,
@@ -41,25 +47,53 @@ const RootLayout = () => {
     Poppins700: Poppins_700Bold,
   });
 
+  const appLoaded = fontsLoaded && themeLoaded && apiLoaded;
+
   useEffect(() => {
+    if (themeInitRef.current) return;
+    themeInitRef.current = true;
+
     (async () => {
-      const colorTheme = (await AsyncStorage.getItem('colorScheme') || colorScheme) === 'dark' ? 'dark' : 'light';
-      colorSchemeLoadedSet(true);
+      let colorTheme: 'light' | 'dark' | 'system' = 'system';
+      try {
+        const themeSaved = await AsyncStorage.getItem('colorScheme');
+        if (themeSaved === 'light' || themeSaved === 'dark') {
+          colorTheme = themeSaved;
+        }
+      } catch (error) {
+        console.error(error);
+      }
       setColorScheme(colorTheme);
-      AndroidNavigationBarSet(colorTheme);
-    })().finally(() => {
-      SplashScreen.hideAsync();
-    });
-  }, [colorScheme, setColorScheme]);
+      themeLoadedSet(true);
+    })();
+  }, [setColorScheme]);
+
+  useEffect(() => {
+    if (!themeLoaded) return;
+
+    AndroidNavigationBarSet(colorScheme === 'dark' ? 'dark' : 'light');
+  }, [colorScheme, themeLoaded]);
 
   useEffect(() => {
     (async () => {
-      await ProfileStore.getState().profileInit();
+      await profileInit();
       apiLoadedSet(true);
     })();
-  }, []);
+  }, [profileInit]);
 
-  if (!fontsLoaded || !colorSchemeLoaded || !apiLoaded) {
+  useEffect(() => {
+    if (!appLoaded) return;
+
+    SplashScreen.hideAsync();
+  }, [appLoaded]);
+
+  useEffect(() => {
+    if (pathname === '/' && authBool && appLoaded) {
+      router.replace('/dashboard');
+    }
+  }, [pathname, authBool, appLoaded]);
+
+  if (!appLoaded) {
     return null;
   }
 

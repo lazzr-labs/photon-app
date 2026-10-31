@@ -10,7 +10,6 @@ import { Icon } from '~/src/components/ui/icon';
 import { Text } from '~/src/components/ui/text';
 import { BackButton } from '~/src/components/back-button';
 import { ProfileStore } from '~/src/stores/profile.store';
-import { AndroidNavigationBarSet } from '~/src/scripts/android-navigation-bar';
 import { Popover, PopoverContent, PopoverTrigger } from '~/src/components/ui/popover';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '~/src/components/ui/alert-dialog';
 
@@ -24,7 +23,6 @@ export const ProfileUpdateHeader = () => {
   const changeTheme = () => {
     const colorTheme = (colorScheme === 'dark') ? 'light' : 'dark';
     setColorScheme(colorTheme);
-    AndroidNavigationBarSet(colorTheme);
     AsyncStorage.setItem('colorScheme', colorTheme);
   };
 

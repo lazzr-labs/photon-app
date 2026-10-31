@@ -1,18 +1,20 @@
 ## GCP SETUP
 
+`[cloud]` is the cloud account prefix, while `[project]` is the application prefix.
+
 ### Bucket
 
 **1. Create Service Account:**
 
-    gcloud iam service-accounts create [project]-app --display-name="[project]-app" --project [project]-gcp
-    gcloud projects add-iam-policy-binding [project]-gcp --member="serviceAccount:[service_account_email]" --role="roles/storage.admin"
+    gcloud iam service-accounts create [project]-app --display-name="[project]-app" --project [cloud]-gcp
+    gcloud projects add-iam-policy-binding [cloud]-gcp --member="serviceAccount:[service_account_email]" --role="roles/storage.admin"
     gcloud iam service-accounts keys create --iam-account=[service_account_email] gcp.json
 
 **2. Create Bucket:**
 
     1. Go to Cloud Storage
     2. Create a new bucket
-    3. Set bucket name (e.g. [project]-app-stag)
+    3. Set bucket name (e.g. [project]-app-stag or [project]-app-prod)
     4. Choose Location Type (e.g. Multi-region)
     5. Choose Standard default storage class
     6. Choose Uniform access control
@@ -40,17 +42,17 @@
     1. Click "Create Load Balancer"
         - Under "Application Load Balancer (HTTP/HTTPS)"
         - Go with all defaults for the load balancer configuration
-    2. Set name for the load balancer (e.g. "app-stag-lb")
+    2. Set name for the load balancer (e.g. "[project]-app-stag-lb" or "[project]-app-prod-lb")
     3. Frontend configuration
-        - Frontend IP name: (e.g. app-stag-fe)
+        - Frontend IP name: (e.g. [project]-app-stag-fe or [project]-app-prod-fe)
         - Protocol: Select HTTPS
-        - IPv4: Create a new IP Address (e.g. app-stag-ip)
+        - IPv4: Create a new IP Address (e.g. [project]-app-stag-ip or [project]-app-prod-ip)
         - Port: 443
-        - Create SSL Certificate (e.g. app-stag-ssl)
+        - Create SSL Certificate (e.g. [project]-app-stag-ssl or [project]-app-prod-ssl)
         - Enable HTTP to HTTPS redirect
     4. Backend configuration
-        - Create a backend bucket ([project]-app-stag-be)
-        - Select the bucket created earlier (e.g. [project]-app-stag)
+        - Create a backend bucket (e.g. [project]-app-stag-be or [project]-app-prod-be)
+        - Select the bucket created earlier (e.g. [project]-app-stag or [project]-app-prod)
         - Enable Cloud CDN
         - Cache mode: Use origin settings based on Cache-Control headers
     5. Routing rules
