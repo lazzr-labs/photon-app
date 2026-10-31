@@ -1,7 +1,5 @@
 ## GCP SETUP
 
-`[cloud]` is the cloud account prefix, while `[project]` is the application prefix.
-
 ### Bucket
 
 **1. Create Service Account:**
