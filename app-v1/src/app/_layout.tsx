@@ -1,8 +1,8 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-import { useRef, useState, useEffect } from 'react';
 import { PortalHost } from '@rn-primitives/portal';
+import { useRef, useState, useEffect } from 'react';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
