@@ -16,7 +16,7 @@ if (!env || (env !== 'prod' && env !== 'stag')) {
 const folderPath = 'dist';
 
 const gcpConfig = {
-  projectId: '[project]-gcp',
+  projectId: '[cloud]-gcp',
   keyFilename: path.join(__dirname, 'gcp.json'),
 };
 
