@@ -1,8 +1,8 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from 'nativewind';
+import { useState, useEffect } from 'react';
 import { PortalHost } from '@rn-primitives/portal';
-import { useRef, useState, useEffect } from 'react';
+import { colorScheme as nativeColorScheme, useColorScheme } from 'nativewind';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -35,10 +35,9 @@ const RootLayout = () => {
   const { authBool } = AuthStore();
   const { profileInit } = ProfileStore();
 
-  const themeInitRef = useRef(false);
+  const { colorScheme } = useColorScheme();
   const [apiLoaded, apiLoadedSet] = useState(false);
   const [themeLoaded, themeLoadedSet] = useState(false);
-  const { colorScheme, setColorScheme } = useColorScheme();
 
   const [fontsLoaded] = useFonts({
     Poppins400: Poppins_400Regular,
@@ -50,9 +49,6 @@ const RootLayout = () => {
   const appLoaded = fontsLoaded && themeLoaded && apiLoaded;
 
   useEffect(() => {
-    if (themeInitRef.current) return;
-    themeInitRef.current = true;
-
     (async () => {
       let colorTheme: 'light' | 'dark' | 'system' = 'system';
       try {
@@ -63,10 +59,10 @@ const RootLayout = () => {
       } catch (error) {
         console.error(error);
       }
-      setColorScheme(colorTheme);
+      nativeColorScheme.set(colorTheme);
       themeLoadedSet(true);
     })();
-  }, [setColorScheme]);
+  }, []);
 
   useEffect(() => {
     if (!themeLoaded) return;
