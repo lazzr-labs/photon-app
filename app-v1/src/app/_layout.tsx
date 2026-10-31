@@ -3,10 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { useRef, useState, useEffect } from 'react';
 import { PortalHost } from '@rn-primitives/portal';
-import { SplashScreen, Stack, router, usePathname } from 'expo-router';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SplashScreen, Stack, router, usePathname } from 'expo-router';
 import { Theme, ThemeProvider, DefaultTheme, DarkTheme } from 'expo-router/react-navigation';
 import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
 
@@ -31,14 +31,14 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
   const pathname = usePathname();
-  const { colorScheme, setColorScheme } = useColorScheme();
 
   const { authBool } = AuthStore();
   const { profileInit } = ProfileStore();
 
+  const themeInitRef = useRef(false);
   const [apiLoaded, apiLoadedSet] = useState(false);
   const [themeLoaded, themeLoadedSet] = useState(false);
-  const themeInitRef = useRef(false);
+  const { colorScheme, setColorScheme } = useColorScheme();
 
   const [fontsLoaded] = useFonts({
     Poppins400: Poppins_400Regular,
@@ -70,7 +70,6 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (!themeLoaded) return;
-
     AndroidNavigationBarSet(colorScheme === 'dark' ? 'dark' : 'light');
   }, [colorScheme, themeLoaded]);
 
@@ -83,7 +82,6 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (!appLoaded) return;
-
     SplashScreen.hideAsync();
   }, [appLoaded]);
 
