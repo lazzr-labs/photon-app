@@ -2,11 +2,11 @@ import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
 import { PortalHost } from '@rn-primitives/portal';
-import { colorScheme as nativeColorScheme, useColorScheme } from 'nativewind';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SplashScreen, Stack, router, usePathname } from 'expo-router';
+import { colorScheme as nativeColorScheme, useColorScheme } from 'nativewind';
 import { Theme, ThemeProvider, DefaultTheme, DarkTheme } from 'expo-router/react-navigation';
 import { Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
 
