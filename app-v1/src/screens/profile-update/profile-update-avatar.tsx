@@ -23,8 +23,8 @@ cssInterop(Pencil, {
 export const ProfileUpdateAvatar = () => {
   const { profile, profileUpdateImage } = ProfileStore();
 
-  const [showCropper, setShowCropper] = useState(false);
   const [imageUri, setImageUri] = useState<string>('');
+  const [showCropper, setShowCropper] = useState(false);
 
   const imageChoose = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
