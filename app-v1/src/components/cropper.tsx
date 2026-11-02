@@ -1,6 +1,6 @@
 import { Modal, TouchableOpacity, View } from 'react-native';
-import { ReactCrop, type Crop, type PixelCrop } from 'react-image-crop';
 import { useRef, useState, type SyntheticEvent } from 'react';
+import { ReactCrop, type Crop, type PixelCrop } from 'react-image-crop';
 
 import { Text } from '~/src/components/ui/text';
 
