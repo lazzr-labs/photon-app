@@ -9,6 +9,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 type CropperProps = {
   uri: string;
   visible: boolean;
+  shape?: 'circle' | 'square';
   maxSize?: number;
   onComplete: (uri: string) => void;
   onCancel: () => void;
@@ -62,7 +63,7 @@ const croppedImageGet = async (image: HTMLImageElement, crop: PixelCrop, maxSize
   });
 };
 
-export const Cropper = ({ uri, visible, maxSize = 1024, onComplete, onCancel }: CropperProps) => {
+export const Cropper = ({ uri, visible, shape = 'circle', maxSize = 1024, onComplete, onCancel }: CropperProps) => {
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
     width: 50,
@@ -112,14 +113,14 @@ export const Cropper = ({ uri, visible, maxSize = 1024, onComplete, onCancel }: 
       <View className='flex-1 bg-black/95'>
 
         <View className='flex-1 items-center justify-center p-5'>
-          <ReactCrop aspect={1} crop={crop} onChange={setCrop} onComplete={setCropCompleted} circularCrop>
+          <ReactCrop aspect={1} crop={crop} onChange={setCrop} onComplete={setCropCompleted} circularCrop={shape === 'circle'}>
             <img
               src={uri}
               ref={imageRef}
               onLoad={onImageLoad}
               style={{ maxHeight: '70vh', maxWidth: '100%' }}
               alt='Crop Preview'
-            />
+            ></img>
           </ReactCrop>
         </View>
 
