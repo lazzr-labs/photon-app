@@ -1,6 +1,6 @@
 import { Modal, TouchableOpacity, View } from 'react-native';
+import { useRef, useState, type SyntheticEvent } from 'react';
 import { ReactCrop, type Crop, type PixelCrop } from 'react-image-crop';
-import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 
 import { Text } from '~/src/components/ui/text';
 
@@ -9,11 +9,13 @@ import 'react-image-crop/dist/ReactCrop.css';
 type CropperProps = {
   uri: string;
   visible: boolean;
+  shape?: 'circle' | 'square';
+  maxSize?: number;
   onComplete: (uri: string) => void;
   onCancel: () => void;
 };
 
-const croppedImageGet = async (image: HTMLImageElement, crop: PixelCrop): Promise<string> => {
+const croppedImageGet = async (image: HTMLImageElement, crop: PixelCrop, maxSize: number): Promise<string> => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
@@ -23,20 +25,30 @@ const croppedImageGet = async (image: HTMLImageElement, crop: PixelCrop): Promis
 
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
+  const sourceX = Math.min(image.naturalWidth, Math.max(0, Math.round(crop.x * scaleX)));
+  const sourceY = Math.min(image.naturalHeight, Math.max(0, Math.round(crop.y * scaleY)));
+  const sourceWidth = Math.min(image.naturalWidth, Math.round((crop.x + crop.width) * scaleX)) - sourceX;
+  const sourceHeight = Math.min(image.naturalHeight, Math.round((crop.y + crop.height) * scaleY)) - sourceY;
+  const size = Math.min(sourceWidth, sourceHeight);
+  const outputSize = Math.min(size, maxSize);
 
-  canvas.width = crop.width;
-  canvas.height = crop.height;
+  if (size <= 0) {
+    throw new Error('Crop is empty');
+  }
+
+  canvas.width = outputSize;
+  canvas.height = outputSize;
 
   ctx.drawImage(
     image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
+    sourceX,
+    sourceY,
+    size,
+    size,
     0,
     0,
-    crop.width,
-    crop.height,
+    outputSize,
+    outputSize,
   );
 
   return new Promise((resolve, reject) => {
@@ -47,11 +59,11 @@ const croppedImageGet = async (image: HTMLImageElement, crop: PixelCrop): Promis
       }
       const url = URL.createObjectURL(blob);
       resolve(url);
-    }, 'image/jpeg');
+    }, 'image/png');
   });
 };
 
-export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) => {
+export const Cropper = ({ uri, visible, shape = 'circle', maxSize = 1024, onComplete, onCancel }: CropperProps) => {
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
     width: 50,
@@ -61,12 +73,6 @@ export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) =>
   });
   const [cropCompleted, setCropCompleted] = useState<PixelCrop>();
   const imageRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    if (!visible) {
-      setCropCompleted(undefined);
-    }
-  }, [visible, uri]);
 
   const onImageLoad = (event: SyntheticEvent<HTMLImageElement>) => {
     const { width, height } = event.currentTarget;
@@ -92,7 +98,7 @@ export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) =>
   const imageSave = async () => {
     if (cropCompleted && imageRef.current) {
       try {
-        const croppedImageUrl = await croppedImageGet(imageRef.current, cropCompleted);
+        const croppedImageUrl = await croppedImageGet(imageRef.current, cropCompleted, maxSize);
         onComplete(croppedImageUrl);
       } catch (errors) {
         console.error('Error cropping image:', errors);
@@ -107,14 +113,14 @@ export const Cropper = ({ uri, visible, onComplete, onCancel }: CropperProps) =>
       <View className='flex-1 bg-black/95'>
 
         <View className='flex-1 items-center justify-center p-5'>
-          <ReactCrop aspect={1} crop={crop} onChange={setCrop} onComplete={setCropCompleted} circularCrop>
+          <ReactCrop aspect={1} crop={crop} onChange={setCrop} onComplete={setCropCompleted} circularCrop={shape === 'circle'}>
             <img
               src={uri}
               ref={imageRef}
               onLoad={onImageLoad}
               style={{ maxHeight: '70vh', maxWidth: '100%' }}
               alt='Crop Preview'
-            />
+            ></img>
           </ReactCrop>
         </View>
 

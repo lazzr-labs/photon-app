@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Pencil, UserRound } from 'lucide-react-native';
 import { Platform, Pressable, View } from 'react-native';
 
+import { ErrorGet } from '~/src/scripts/error';
 import { Toast } from '~/src/components/toast';
 import { Icon } from '~/src/components/ui/icon';
 import { Cropper } from '~/src/components/cropper';
@@ -22,8 +23,8 @@ cssInterop(Pencil, {
 export const ProfileUpdateAvatar = () => {
   const { profile, profileUpdateImage } = ProfileStore();
 
-  const [showCropper, setShowCropper] = useState(false);
   const [imageUri, setImageUri] = useState<string>('');
+  const [showCropper, setShowCropper] = useState(false);
 
   const imageChoose = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -35,6 +36,7 @@ export const ProfileUpdateAvatar = () => {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
+      preferredAssetRepresentationMode: ImagePicker.UIImagePickerPreferredAssetRepresentationMode.Compatible,
       mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
@@ -42,18 +44,23 @@ export const ProfileUpdateAvatar = () => {
     });
 
     if (!result.canceled && result.assets[0]) {
-      const imageUri = result.assets[0].uri;
+      const asset = result.assets[0];
+      const imageUri = asset.uri;
       if (Platform.OS === 'web') {
         setImageUri(imageUri);
         setShowCropper(true);
       } else {
         try {
-          await profileUpdateImage(imageUri);
+          await profileUpdateImage(
+            imageUri,
+            asset.mimeType ?? 'image/jpeg',
+            imageUri.split('/').pop() ?? asset.fileName ?? 'avatar.jpg',
+          );
           Toast('Profile Picture Updated Successfully', {
             variant: 'success',
           });
         } catch (errors: any) {
-          Toast(errors?.message ?? 'Failed to update profile picture.', {
+          Toast(ErrorGet(errors?.response?.data ?? { detail: errors?.message ?? 'Failed to update profile picture.' }), {
             variant: 'destructive',
           });
         }
@@ -65,12 +72,12 @@ export const ProfileUpdateAvatar = () => {
     setShowCropper(false);
     setImageUri('');
     try {
-      await profileUpdateImage(uri);
+      await profileUpdateImage(uri, 'image/png', 'avatar.png');
       Toast('Profile Picture Updated Successfully', {
         variant: 'success',
       });
     } catch (errors: any) {
-      Toast(errors?.message ?? 'Failed to update profile picture.', {
+      Toast(ErrorGet(errors?.response?.data ?? { detail: errors?.message ?? 'Failed to update profile picture.' }), {
         variant: 'destructive',
       });
     }
@@ -100,6 +107,7 @@ export const ProfileUpdateAvatar = () => {
 
       {Platform.OS === 'web' && (
         <Cropper
+          maxSize={512}
           uri={imageUri}
           visible={showCropper}
           onComplete={onComplete}
