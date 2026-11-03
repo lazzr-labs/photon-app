@@ -27,7 +27,9 @@ const croppedImageGet = async (image: HTMLImageElement, crop: PercentCrop, aspec
 
   // Independent edge rounding must not turn a square crop into a rectangle.
   if (aspect === 1) {
-    sourceWidth = sourceHeight = Math.min(sourceWidth, sourceHeight);
+    const size = Math.min(sourceWidth, sourceHeight);
+    sourceWidth = size;
+    sourceHeight = size;
   }
 
   if (!Number.isFinite(sourceWidth) || !Number.isFinite(sourceHeight) || sourceWidth <= 0 || sourceHeight <= 0) {
@@ -85,7 +87,7 @@ export const Cropper = ({ uri, visible, aspect = 1, shape = 'circle', maxSize = 
   );
 };
 
-const CropperContent = ({ uri, aspect = 1, shape = 'circle', maxSize = 1024, onComplete, onCancel }: Omit<CropperProps, 'visible'>) => {
+const CropperContent = ({ uri, aspect, shape, maxSize, onComplete, onCancel }: Required<Omit<CropperProps, 'visible'>>) => {
   const [crop, setCrop] = useState<PercentCrop>();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
