@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cssInterop } from 'nativewind';
 import * as ImagePicker from 'expo-image-picker';
 import { Pencil, UserRound } from 'lucide-react-native';
@@ -20,11 +20,23 @@ cssInterop(Pencil, {
   },
 });
 
+const imageUriRevoke = (uri: string) => {
+  if (Platform.OS === 'web' && uri.startsWith('blob:')) {
+    URL.revokeObjectURL(uri);
+  }
+};
+
 export const ProfileUpdateAvatar = () => {
   const { profile, profileUpdateImage } = ProfileStore();
 
   const [imageUri, setImageUri] = useState<string>('');
   const [showCropper, setShowCropper] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      imageUriRevoke(imageUri);
+    };
+  }, [imageUri]);
 
   const imageChoose = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -80,6 +92,8 @@ export const ProfileUpdateAvatar = () => {
       Toast(ErrorGet(errors?.response?.data ?? { detail: errors?.message ?? 'Failed to update profile picture.' }), {
         variant: 'destructive',
       });
+    } finally {
+      imageUriRevoke(uri);
     }
   };
 
