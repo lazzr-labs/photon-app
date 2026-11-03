@@ -20,12 +20,13 @@ type CropperProps = {
 const croppedImageGet = async (image: HTMLImageElement, crop: PercentCrop, aspect: number, maxSize: number): Promise<string> => {
   const sourceX = Math.max(0, Math.round((crop.x / 100) * image.naturalWidth));
   const sourceY = Math.max(0, Math.round((crop.y / 100) * image.naturalHeight));
+
   const sourceRight = Math.min(image.naturalWidth, Math.round(((crop.x + crop.width) / 100) * image.naturalWidth));
   const sourceBottom = Math.min(image.naturalHeight, Math.round(((crop.y + crop.height) / 100) * image.naturalHeight));
+
   let sourceWidth = sourceRight - sourceX;
   let sourceHeight = sourceBottom - sourceY;
 
-  // Independent edge rounding must not turn a square crop into a rectangle.
   if (aspect === 1) {
     const size = Math.min(sourceWidth, sourceHeight);
     sourceWidth = size;
@@ -105,6 +106,7 @@ const CropperContent = ({ uri, aspect, shape, maxSize, onComplete, onCancel }: R
 
   const onImageLoad = (event: SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
+
     if (!naturalWidth || !naturalHeight) {
       setCrop(undefined);
       setError('Unable to load this image.');
@@ -130,18 +132,19 @@ const CropperContent = ({ uri, aspect, shape, maxSize, onComplete, onCancel }: R
     if (savingRef.current || !imageRef.current || !crop?.width || !crop.height) return;
 
     savingRef.current = true;
+
     setSaving(true);
     setError('');
 
     let outputUri: string | undefined;
     try {
       outputUri = await croppedImageGet(imageRef.current, crop, aspect, maxSize);
+
       if (!activeRef.current) {
         URL.revokeObjectURL(outputUri);
         return;
       }
 
-      // The caller owns the output URL and releases it after its last use.
       onComplete(outputUri);
     } catch (errors) {
       if (outputUri) URL.revokeObjectURL(outputUri);
@@ -159,17 +162,11 @@ const CropperContent = ({ uri, aspect, shape, maxSize, onComplete, onCancel }: R
       <View className='flex-1 bg-black/95'>
 
         <View className='flex-1 items-center justify-center p-5'>
-          <ReactCrop
-            crop={crop}
-            aspect={aspect}
-            circularCrop={shape === 'circle'}
-            disabled={saving}
-            onChange={(_, percentCrop) => setCrop(percentCrop)}
-          >
+          <ReactCrop crop={crop} aspect={aspect} disabled={saving} circularCrop={shape === 'circle'} onChange={(_, percentCrop) => setCrop(percentCrop)}>
             <img
-              ref={imageRef}
               src={uri}
-              alt='Crop preview'
+              ref={imageRef}
+              alt='Crop Preview'
               crossOrigin='anonymous'
               onLoad={onImageLoad}
               onError={() => {
