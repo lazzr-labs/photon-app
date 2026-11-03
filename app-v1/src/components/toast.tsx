@@ -61,8 +61,8 @@ type ToastItemProps = {
 };
 
 function ToastItem({ toast, iconVariant, stylesVariant, onRemove }: ToastItemProps) {
-  const translateY = useSharedValue(-100);
   const opacity = useSharedValue(0);
+  const translateY = useSharedValue(-100);
 
   useEffect(() => {
     translateY.set(withTiming(0, { duration: 300 }));
@@ -129,8 +129,9 @@ function ToastItem({ toast, iconVariant, stylesVariant, onRemove }: ToastItemPro
 };
 
 function ToastHost() {
-  const [current, setCurrent] = useState<ToastRecord[]>(toasts);
   const insets = useSafeAreaInsets();
+
+  const [current, setCurrent] = useState<ToastRecord[]>(toasts);
 
   useEffect(() => {
     const syncCurrent = () => setCurrent([...toasts]);
@@ -138,6 +139,7 @@ function ToastHost() {
     syncCurrent();
     return unsubscribe;
   }, []);
+
   if (current.length === 0) return null;
 
   const getToastIcon = (variant: ToastVariant) => {
