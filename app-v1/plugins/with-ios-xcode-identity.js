@@ -2,25 +2,25 @@ const { withInfoPlist, withXcodeProject } = require('expo/config-plugins');
 
 const supportedOrientations = [
   'UIInterfaceOrientationPortrait',
-  'UIInterfaceOrientationPortraitUpsideDown',
   'UIInterfaceOrientationLandscapeLeft',
   'UIInterfaceOrientationLandscapeRight',
+  'UIInterfaceOrientationPortraitUpsideDown',
 ];
 
 function withIosXcodeIdentity(config) {
-  const appCategory = config.ios?.infoPlist?.LSApplicationCategoryType;
+  const appleTeamId = config.ios?.appleTeamId;
   const buildNumber = config.ios?.buildNumber;
-  const displayName = config.ios?.infoPlist?.CFBundleDisplayName ?? config.name;
   const version = config.ios?.version ?? config.version;
+  const appCategory = config.ios?.infoPlist?.LSApplicationCategoryType;
+  const displayName = config.ios?.infoPlist?.CFBundleDisplayName ?? config.name;
 
   config = withInfoPlist(config, (config) => {
+    config.modResults.CFBundleVersion = buildNumber;
     config.modResults.CFBundleDisplayName = displayName;
     config.modResults.CFBundleShortVersionString = version;
-    config.modResults.CFBundleVersion = buildNumber;
     config.modResults.LSApplicationCategoryType = appCategory;
     config.modResults.UISupportedInterfaceOrientations = supportedOrientations;
     config.modResults['UISupportedInterfaceOrientations~ipad'] = supportedOrientations;
-
     return config;
   });
 
@@ -34,10 +34,11 @@ function withIosXcodeIdentity(config) {
         continue;
       }
 
+      buildSettings.MARKETING_VERSION = version;
+      buildSettings.DEVELOPMENT_TEAM = appleTeamId;
       buildSettings.CURRENT_PROJECT_VERSION = buildNumber;
       buildSettings.INFOPLIST_KEY_CFBundleDisplayName = displayName;
       buildSettings.INFOPLIST_KEY_LSApplicationCategoryType = `"${appCategory}"`;
-      buildSettings.MARKETING_VERSION = version;
     }
 
     return config;

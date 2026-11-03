@@ -17,7 +17,7 @@ type Actions = {
   profileClear: () => Promise<void>;
   profileInit: () => Promise<void>;
   profileUpdate: (profile: Profile) => Promise<void>;
-  profileUpdateImage: (uri: string) => Promise<void>;
+  profileUpdateImage: (uri: string, type: string, name: string) => Promise<void>;
   profileDelete: () => Promise<void>;
   profileLogout: () => void;
 };
@@ -64,29 +64,19 @@ export const ProfileStore = create<State & Actions>()((set, get) => ({
       throw error;
     }
   },
-  profileUpdateImage: async (uri: string) => {
+  profileUpdateImage: async (uri, type, name) => {
     const token = AuthStore.getState().authToken;
-    try {
-      let file: any;
-      if (Platform.OS === 'web') {
-        const response = await fetch(uri);
-        file = await response.blob();
-      } else {
-        const type = 'image/png';
-        const filename = 'avatar.png';
-        file = {
-          uri: uri,
-          type: type,
-          name: filename,
-        };
-      }
-      const response = await usersApi.profileImageUpdateAPI(file, token);
-      const profileResponse: Profile = response.data.object;
-      get().profileSet(profileResponse);
-    } catch (errors: any) {
-      const error = ErrorGet(errors.response.data);
-      throw error;
+    let file: File | { uri: string; type: string; name: string };
+    if (Platform.OS === 'web') {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      file = new File([blob], name, { type: blob.type || type });
+    } else {
+      file = { uri, type, name };
     }
+    const response = await usersApi.profileImageUpdateAPI(file as File, token);
+    const profileResponse: Profile = response.data.object;
+    get().profileSet(profileResponse);
   },
   profileDelete: async () => {
     const token = AuthStore.getState().authToken;

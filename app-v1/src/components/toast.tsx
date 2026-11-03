@@ -1,9 +1,16 @@
+import { cssInterop } from 'nativewind';
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+
+cssInterop(Ionicons, {
+  className: {
+    target: 'style',
+  },
+});
 
 type ToastVariant = 'default' | 'success' | 'destructive';
 
@@ -54,24 +61,24 @@ type ToastItemProps = {
 };
 
 function ToastItem({ toast, iconVariant, stylesVariant, onRemove }: ToastItemProps) {
-  const translateY = useSharedValue(-100);
   const opacity = useSharedValue(0);
+  const translateY = useSharedValue(-100);
 
   useEffect(() => {
-    translateY.value = withTiming(0, { duration: 300 });
-    opacity.value = withTiming(1, { duration: 300 });
+    translateY.set(withTiming(0, { duration: 300 }));
+    opacity.set(withTiming(1, { duration: 300 }));
   }, [opacity, translateY]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateY: translateY.value }],
-      opacity: opacity.value,
+      transform: [{ translateY: translateY.get() }],
+      opacity: opacity.get(),
     };
   });
 
   const handleRemove = () => {
-    translateY.value = withTiming(-200, { duration: 300 });
-    opacity.value = withTiming(0, { duration: 300 });
+    translateY.set(withTiming(-200, { duration: 300 }));
+    opacity.set(withTiming(0, { duration: 300 }));
     setTimeout(() => {
       onRemove();
     }, 300);
@@ -82,19 +89,19 @@ function ToastItem({ toast, iconVariant, stylesVariant, onRemove }: ToastItemPro
     .activeOffsetY([-5, 5])
     .onUpdate((event) => {
       if (event.translationY < 0) {
-        translateY.value = event.translationY;
-        opacity.value = Math.max(0, 1 + event.translationY / 200);
+        translateY.set(event.translationY);
+        opacity.set(Math.max(0, 1 + event.translationY / 200));
       } else {
-        translateY.value = 0;
-        opacity.value = 1;
+        translateY.set(0);
+        opacity.set(1);
       }
     })
     .onEnd((event) => {
       if (event.translationY < -50) {
         handleRemove();
       } else {
-        translateY.value = withTiming(0, { duration: 200 });
-        opacity.value = withTiming(1, { duration: 200 });
+        translateY.set(withTiming(0, { duration: 200 }));
+        opacity.set(withTiming(1, { duration: 200 }));
       }
     });
 
@@ -122,10 +129,17 @@ function ToastItem({ toast, iconVariant, stylesVariant, onRemove }: ToastItemPro
 };
 
 function ToastHost() {
-  const [current, setCurrent] = useState<ToastRecord[]>(toasts);
   const insets = useSafeAreaInsets();
 
-  useEffect(() => subscribe(() => setCurrent([...toasts])), []);
+  const [current, setCurrent] = useState<ToastRecord[]>(toasts);
+
+  useEffect(() => {
+    const syncCurrent = () => setCurrent([...toasts]);
+    const unsubscribe = subscribe(syncCurrent);
+    syncCurrent();
+    return unsubscribe;
+  }, []);
+
   if (current.length === 0) return null;
 
   const getToastIcon = (variant: ToastVariant) => {
