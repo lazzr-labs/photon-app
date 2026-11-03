@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { cssInterop } from 'nativewind';
+import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { Pencil, UserRound } from 'lucide-react-native';
 import { Platform, Pressable, View } from 'react-native';
