@@ -1,15 +1,20 @@
-export const ErrorGet = (response: any) => {
+export const ErrorGet = (response: any): string => {
   let errorString = 'There was a server error.';
-  if (response.detail) {
+
+  if (typeof response === 'string') return response || errorString;
+
+  if (typeof response?.message === 'string' && response.message) {
+    errorString = response.message;
+  }
+  if (typeof response?.detail === 'string' && response.detail) {
     errorString = response.detail;
   }
-  if (response.length >= 1) {
-    errorString = '';
-    errorString = (response[0].location) ? errorString.concat('', response[0].location) : errorString;
-    errorString = (response[0].location && response[0].message) ? errorString.concat('', ': ') : errorString;
-    errorString = (response[0].message) ? errorString.concat('', response[0].message) : errorString;
+  if (Array.isArray(response)) {
+    const location = typeof response[0]?.location === 'string' ? response[0].location : '';
+    const message = typeof response[0]?.message === 'string' ? response[0].message : '';
+    errorString = [location, message].filter(Boolean).join(': ') || errorString;
   }
-  if (response.errors && response.errors.length >= 1) {
+  if (Array.isArray(response?.errors) && typeof response.errors[0]?.message === 'string' && response.errors[0].message) {
     errorString = response.errors[0].message;
   }
   return errorString;

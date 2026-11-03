@@ -5,6 +5,7 @@ import type { TriggerRef } from '@rn-primitives/popover';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EllipsisVertical, Moon, Sun, Trash2 } from 'lucide-react-native';
 
+import { ErrorGet } from '~/src/scripts/error';
 import { Toast } from '~/src/components/toast';
 import { Icon } from '~/src/components/ui/icon';
 import { Text } from '~/src/components/ui/text';
@@ -34,7 +35,7 @@ export const ProfileUpdateHeader = () => {
         duration: 4500,
       });
     } catch (error: any) {
-      Toast(error, {
+      Toast(ErrorGet(error?.response?.data ?? error), {
         variant: 'destructive',
         duration: 6000,
       });
